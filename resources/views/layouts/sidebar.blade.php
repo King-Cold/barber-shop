@@ -16,36 +16,43 @@
     <!-- Navigation -->
     <nav class="flex-1 px-4 py-4 flex flex-col space-y-3 overflow-y-auto font-sans">
         <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 rounded-md transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'bg-bronze-gold text-white font-medium' : 'text-gray-300 hover:text-white hover:bg-slate-700/50' }}">
-            <i class="fa-solid fa-chart-line w- text-center text-sm"></i>
+            <i class="fa-solid fa-chart-line w-6 text-center text-sm"></i>
             <span class="ml-3 text-[15px]">Dashboard</span>
         </a>
         
         <div class="h-px bg-slate-700/50 mx-2"></div>
 
-        <a href="#" class="flex items-center px-4 py-3 rounded-md text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-200">
+        <a href="{{ route('appointments') }}" class="flex items-center px-4 py-3 rounded-md transition-colors duration-200 {{ request()->routeIs('appointments') ? 'bg-bronze-gold text-white font-medium' : 'text-gray-300 hover:text-white hover:bg-slate-700/50' }}">
             <i class="fa-regular fa-calendar-days w-6 text-center text-sm"></i>
             <span class="ml-3 text-[15px]">Citas</span>
         </a>
 
         <div class="h-px bg-slate-700/50 mx-2"></div>
 
-        <a href="#" class="flex items-center px-4 py-3 rounded-md text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-200">
+        <a href="{{ route('clients') }}" class="flex items-center px-4 py-3 rounded-md transition-colors duration-200 {{ request()->routeIs('clients') ? 'bg-bronze-gold text-white font-medium' : 'text-gray-300 hover:text-white hover:bg-slate-700/50' }}">
             <i class="fa-solid fa-users w-6 text-center text-sm"></i>
             <span class="ml-3 text-[15px]">Clientes</span>
         </a>
         
         <div class="h-px bg-slate-700/50 mx-2"></div>
 
-        <a href="#" class="flex items-center px-4 py-3 rounded-md text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-200">
+        <a href="{{ route('barbers') }}" class="flex items-center px-4 py-3 rounded-md transition-colors duration-200 {{ request()->routeIs('barbers') ? 'bg-bronze-gold text-white font-medium' : 'text-gray-300 hover:text-white hover:bg-slate-700/50' }}">
             <i class="fa-solid fa-scissors w-6 text-center text-sm"></i>
             <span class="ml-3 text-[15px]">Barberos</span>
         </a>
         
         <div class="h-px bg-slate-700/50 mx-2"></div>
 
-        <a href="#" class="flex items-center px-4 py-3 rounded-md text-gray-300 hover:text-white hover:bg-slate-700/50 transition-colors duration-200">
+        <a href="{{ route('services') }}" class="flex items-center px-4 py-3 rounded-md transition-colors duration-200 {{ request()->routeIs('services') ? 'bg-bronze-gold text-white font-medium' : 'text-gray-300 hover:text-white hover:bg-slate-700/50' }}">
             <i class="fa-solid fa-spray-can w-6 text-center text-sm"></i>
             <span class="ml-3 text-[15px]">Servicios</span>
+        </a>
+
+        <div class="h-px bg-slate-700/50 mx-2"></div>
+
+        <a href="{{ route('users') }}" class="flex items-center px-4 py-3 rounded-md transition-colors duration-200 {{ request()->routeIs('users') ? 'bg-bronze-gold text-white font-medium' : 'text-gray-300 hover:text-white hover:bg-slate-700/50' }}">
+            <i class="fa-solid fa-user-shield w-6 text-center text-sm"></i>
+            <span class="ml-3 text-[15px]">Usuarios</span>
         </a>
     </nav>
 </aside>
