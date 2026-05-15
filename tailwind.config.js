@@ -12,7 +12,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Poppins', ...defaultTheme.fontFamily.sans],
+                barber: ['Oswald', 'sans-serif'],
+                elegant: ['Playfair Display', 'serif'],
+                cinzel: ['Cinzel', 'serif'],
+            },
+            colors: {
+                'dark-carbon': '#1C1C1C',
+                'vintage-gold': '#D4AF37',
+                'crimson-red': '#8B0000',
+                'chalk-white': '#F8F8F8',
+                'barber-black': '#0F0F0F',
+                'barber-gold': '#C5A059',
+                'barber-silver': '#BDBDBD',
+                'slate-dark': '#1F232D',
+                'bronze-gold': '#8B7355',
             },
         },
     },

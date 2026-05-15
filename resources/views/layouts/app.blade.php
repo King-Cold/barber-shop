@@ -5,32 +5,66 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Barber Shop') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <livewire:layout.navigation />
+    <body class="font-sans antialiased bg-chalk-white text-dark-carbon" x-data="{ sidebarOpen: false }">
+        <div class="min-h-screen flex">
+            <!-- Sidebar -->
+            @include('layouts.sidebar')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+            <!-- Main Content Area -->
+            <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
+                <!-- Top Navbar -->
+                <header class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 hover:text-barber-gold focus:outline-none transition-colors duration-200 lg:hidden">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+
+                    <div class="hidden lg:block">
+                        <h2 class="text-xl font-semibold text-gray-800">{{ $header ?? 'Welcome back!' }}</h2>
+                    </div>
+
+                    <div class="flex items-center space-x-6" x-data="{ open: false }">
+                        <div class="relative">
+                            <button @click="open = !open" class="flex items-center space-x-3 focus:outline-none">
+                                <span class="hidden sm:inline-block font-medium text-gray-700">{{ Auth::user()->name }}</span>
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-xs text-gray-400 transition-transform" :class="open ? 'rotate-180' : ''"></i>
+                            </button>
+
+                            <!-- User Dropdown -->
+                            <div x-show="open" @click.away="open = false" x-cloak
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="transform opacity-0 scale-95"
+                                 x-transition:enter-end="transform opacity-100 scale-100"
+                                 class="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100 z-50">
+                                <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                    <i class="fa-solid fa-user mr-2 text-gray-400"></i> Profile
+                                </a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <livewire:layout.navigation />
+                            </div>
+                        </div>
                     </div>
                 </header>
-            @endif
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <!-- Page Content -->
+                <main class="flex-1 overflow-y-auto p-8 bg-chalk-white">
+                    <div class="max-w-7xl mx-auto">
+                        {{ $slot }}
+                    </div>
+                </main>
+            </div>
         </div>
+
+        @stack('scripts')
     </body>
 </html>
