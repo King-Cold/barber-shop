@@ -50,7 +50,12 @@
                                     <i class="fa-solid fa-user mr-2 text-gray-400"></i> Profile
                                 </a>
                                 <div class="border-t border-gray-100 my-1"></div>
-                                <livewire:layout.navigation />
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                        <i class="fa-solid fa-right-from-bracket mr-2 text-gray-400"></i> Log Out
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
