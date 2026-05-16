@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -23,7 +24,7 @@ class UserForm extends Component
     public $email;
     public $password;
     public $password_confirmation;
-    public $role = 'admin';
+    public $role_id = 1; // Default to Admin
     public $photo; // Upload
     public $currentPhoto; // Display
 
@@ -34,7 +35,7 @@ class UserForm extends Component
             $this->isEditing = true;
             $this->name = $user->name;
             $this->email = $user->email;
-            $this->role = $user->role;
+            $this->role_id = $user->role_id;
             $this->currentPhoto = $user->photo;
         }
     }
@@ -44,7 +45,7 @@ class UserForm extends Component
         $rules = [
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->user?->id)],
-            'role' => 'required|string|in:admin,super_admin',
+            'role_id' => 'required|integer|in:1,2',
             'photo' => 'nullable|image|max:2048',
         ];
 
@@ -76,7 +77,7 @@ class UserForm extends Component
             $data = [
                 'name' => $this->name,
                 'email' => $this->email,
-                'role' => $this->role,
+                'role_id' => $this->role_id,
                 'photo' => $photoPath,
             ];
 
@@ -96,13 +97,13 @@ class UserForm extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
-                'role' => $this->role,
+                'role_id' => $this->role_id,
                 'photo' => $photoPath,
             ]);
 
             session()->flash('swal', [
                 'title' => 'Usuario Creado',
-                'text' => 'El usuario fue registrado exitosamente.',
+                'text' => 'El nuevo administrador ha sido registrado.',
                 'icon' => 'success',
             ]);
         }

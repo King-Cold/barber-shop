@@ -15,15 +15,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1 Admin User
-        if (!User::where('email', 'admin@barber.com')->exists()) {
-            User::factory()->create([
+        // Seed the 4 roles
+        \App\Models\Role::updateOrCreate(['id' => 1], ['name' => 'Administrador']);
+        \App\Models\Role::updateOrCreate(['id' => 2], ['name' => 'Super Administrador']);
+        \App\Models\Role::updateOrCreate(['id' => 3], ['name' => 'Barbero']);
+        \App\Models\Role::updateOrCreate(['id' => 4], ['name' => 'Cliente']);
+        // 1 Admin User (Ensure Super Admin role_id 2)
+        User::updateOrCreate(
+            ['email' => 'admin@barber.com'],
+            [
                 'name' => 'Administrator',
-                'email' => 'admin@barber.com',
                 'password' => \Illuminate\Support\Facades\Hash::make('password'),
-                'role' => 'admin',
-            ]);
-        }
+                'role_id' => 2, // Super Admin
+            ]
+        );
 
         $this->call([
             ServiceSeeder::class,

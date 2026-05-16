@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
         'photo',
     ];
 
@@ -49,13 +49,20 @@ class User extends Authenticatable
         ];
     }
 
-    public function barber()
+    public function role()
     {
-        return $this->hasOne(Barber::class);
+        return $this->belongsTo(Role::class);
     }
 
-    public function client()
+    public function isSuperAdmin(): bool
     {
-        return $this->hasOne(Client::class);
+        return $this->role_id == 2;
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role_id == 1;
+    }
+
+    // Since Barbers and Clients no longer have accounts, these relations can be removed or kept as empty helpers
 }

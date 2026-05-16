@@ -5,9 +5,6 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
-use App\Models\Client;
-use App\Models\Barber;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 
@@ -51,11 +48,22 @@ class UserManager extends Component
     {
         $user = User::find($id);
         
-        // Validation: Super admin cannot delete themselves
+        // Security Check: Cannot delete self
         if ($user && $user->id === auth()->id()) {
             $this->dispatch('swal', [
                 'title' => 'Acción denegada',
-                'text' => 'No puedes eliminar tu propia cuenta mientras estás logueado.',
+                'text' => 'No puedes eliminar tu propia cuenta.',
+                'icon' => 'error',
+                'showConfirmButton' => true
+            ]);
+            return;
+        }
+
+        // Security Check: Only SuperAdmin can delete other SuperAdmins (or prevent it entirely)
+        if ($user && $user->isSuperAdmin() && !auth()->user()->isSuperAdmin()) {
+            $this->dispatch('swal', [
+                'title' => 'Acceso Denegado',
+                'text' => 'Solo un Super Administrador puede gestionar a otros Super Administradores.',
                 'icon' => 'error',
                 'showConfirmButton' => true
             ]);
@@ -64,7 +72,7 @@ class UserManager extends Component
 
         $this->dispatch('swal:confirm', [
             'title' => '¿Estás seguro?',
-            'text' => '¡No podrás revertir esto!',
+            'text' => "Estás a punto de eliminar a {$user->name}. ¡No podrás revertir esto!",
             'icon' => 'warning',
             'id' => $id
         ]);
@@ -75,7 +83,8 @@ class UserManager extends Component
         $user = User::find($id);
         if ($user) {
             $userName = $user->name;
-            // Extra security check
+            
+            // Final security check
             if ($user->id === auth()->id()) {
                 return;
             }
@@ -93,14 +102,14 @@ class UserManager extends Component
 
     public function render()
     {
-        $users = User::where('name', 'like', '%' . $this->search . '%')
-            ->orWhere('email', 'like', '%' . $this->search . '%')
-            ->orWhere('role', 'like', '%' . $this->search . '%')
+        $users = User::with('role')
+            ->where(function($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%');
+            })
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.users.index', [
-            'users' => $users
-        ]);
+        return view('livewire.admin.users.index', compact('users'));
     }
 }

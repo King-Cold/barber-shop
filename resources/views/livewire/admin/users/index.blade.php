@@ -45,13 +45,8 @@
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Email
                         </th>
-                        <th wire:click="sortBy('role')" class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Rol
-                            @if($sortField === 'role')
-                                <i class="fa-solid fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                            @else
-                                <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
-                            @endif
                         </th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Acciones</th>
                     </tr>
@@ -80,14 +75,14 @@
                                 {{ $user->email }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($user->role === 'super_admin')
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Super Admin</span>
-                                @elseif($user->role === 'admin')
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Administrador</span>
-                                @elseif($user->role === 'barber')
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Barbero</span>
+                                @if($user->role_id == 2)
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        <i class="fa-solid fa-shield mr-1"></i> {{ $user->role->name ?? 'S. Admin' }}
+                                    </span>
                                 @else
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Cliente</span>
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        <i class="fa-solid fa-user-shield mr-1"></i> {{ $user->role->name ?? 'Admin' }}
+                                    </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
