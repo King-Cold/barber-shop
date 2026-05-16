@@ -2,12 +2,12 @@
     class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-dark text-white transition-transform duration-300 transform lg:translate-x-0 lg:static lg:inset-0 shadow-xl flex flex-col">
     
     <!-- Logo Section -->
-    <div class="flex items-center justify-center pt-8 pb-6">
-        <a href="{{ route('dashboard') }}" class="flex flex-col items-center w-full px-4">
-            <div class="w-24 h-auto flex items-center justify-center mb-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Barber Shop Logo" class="w-full h-full object-contain">
+    <div class="flex items-center justify-center pt-10 pb-6">
+        <a href="{{ route('dashboard') }}" class="flex flex-col items-center w-full px-4 text-center">
+            <div class="mb-4">
+                <i class="fa-solid fa-scissors text-6xl text-bronze-gold"></i>
             </div>
-            <h1 class="text-2xl font-bold text-white tracking-widest font-sans uppercase">
+            <h1 class="text-2xl font-bold text-white tracking-widest font-barber uppercase">
                 Barber <span class="text-bronze-gold">Shop</span>
             </h1>
         </a>

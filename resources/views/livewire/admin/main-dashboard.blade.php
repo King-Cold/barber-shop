@@ -72,8 +72,19 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $appointment->client->name }}</div>
-                                <div class="text-xs text-gray-500">{{ $appointment->client->phone ?? 'Sin teléfono' }}</div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-dark font-bold mr-3 border border-slate-200 overflow-hidden">
+                                        @if($appointment->client->photo)
+                                            <img src="{{ asset($appointment->client->photo) }}" class="w-full h-full object-cover rounded-full" loading="lazy">
+                                        @else
+                                            {{ substr($appointment->client->name, 0, 1) }}
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $appointment->client->name }}</div>
+                                        <div class="text-xs text-gray-500">{{ $appointment->client->phone ?? 'Sin teléfono' }}</div>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-800">
@@ -82,8 +93,12 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                 <div class="flex items-center">
-                                    <div class="w-6 h-6 rounded-full bg-bronze-gold text-white flex items-center justify-center text-xs font-bold mr-2">
-                                        {{ substr($appointment->barber->name, 0, 1) }}
+                                    <div class="w-8 h-8 rounded-full bg-bronze-gold text-white flex items-center justify-center text-xs font-bold mr-2 overflow-hidden">
+                                        @if($appointment->barber->photo)
+                                            <img src="{{ asset($appointment->barber->photo) }}" class="w-full h-full object-cover rounded-full" loading="lazy">
+                                        @else
+                                            {{ substr($appointment->barber->name, 0, 1) }}
+                                        @endif
                                     </div>
                                     {{ $appointment->barber->name }}
                                 </div>

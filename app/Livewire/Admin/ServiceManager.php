@@ -15,29 +15,8 @@ class ServiceManager extends Component
     public $search = '';
     public $sortField = 'id';
     public $sortDirection = 'desc';
-    
-    // Modal state
-    public $isModalOpen = false;
-    public $isEditing = false;
-    
-    // Form fields
-    public $serviceId;
-    public $name;
-    public $description;
-    public $price;
-    public $duration;
 
     protected $listeners = ['deleteConfirmed' => 'delete'];
-
-    protected function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'duration' => 'required|integer|min:1',
-        ];
-    }
 
     public function updatingSearch()
     {
@@ -56,60 +35,12 @@ class ServiceManager extends Component
 
     public function create()
     {
-        $this->resetForm();
-        $this->isEditing = false;
-        $this->isModalOpen = true;
+        return redirect()->route('services.create');
     }
 
     public function edit($id)
     {
-        $service = Service::findOrFail($id);
-        $this->serviceId = $service->id;
-        $this->name = $service->name;
-        $this->description = $service->description;
-        $this->price = $service->price;
-        $this->duration = $service->duration;
-        
-        $this->isEditing = true;
-        $this->isModalOpen = true;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->isEditing) {
-            $service = Service::find($this->serviceId);
-            $service->update([
-                'name' => $this->name,
-                'description' => $this->description,
-                'price' => $this->price,
-                'duration' => $this->duration,
-            ]);
-            $this->dispatch('swal', [
-                'title' => 'Servicio Actualizado',
-                'text' => 'Los datos se actualizaron correctamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        } else {
-            Service::create([
-                'name' => $this->name,
-                'description' => $this->description,
-                'price' => $this->price,
-                'duration' => $this->duration,
-            ]);
-            $this->dispatch('swal', [
-                'title' => 'Servicio Creado',
-                'text' => 'El servicio fue registrado exitosamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        }
-
-        $this->closeModal();
+        return redirect()->route('services.edit', $id);
     }
 
     public function confirmDelete($id)
@@ -137,29 +68,13 @@ class ServiceManager extends Component
         }
     }
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-    }
-
-    private function resetForm()
-    {
-        $this->serviceId = null;
-        $this->name = '';
-        $this->description = '';
-        $this->price = '';
-        $this->duration = '';
-        $this->resetValidation();
-    }
-
     public function render()
     {
         $services = Service::where('name', 'like', '%' . $this->search . '%')
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.service-manager', [
+        return view('livewire.admin.services.index', [
             'services' => $services
         ]);
     }

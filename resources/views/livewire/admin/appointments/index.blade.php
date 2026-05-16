@@ -1,4 +1,12 @@
 <div>
+    <div class="mb-6">
+        <x-breadcrumbs :links="[
+            ['label' => 'Citas']
+        ]" />
+        <h1 class="text-2xl font-bold text-slate-dark">Gestión de Citas</h1>
+        <p class="text-gray-500 text-sm mt-1">Controla la agenda y el estado de las reservas.</p>
+    </div>
+
     <!-- Top Action Bar -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
         <div class="relative w-full md:w-1/3">
@@ -62,15 +70,37 @@
                                 <div class="text-sm text-gray-500 mt-1"><i class="fa-regular fa-clock mr-1 text-bronze-gold"></i> {{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-slate-dark">{{ $appointment->client->name }}</div>
-                                <div class="text-xs text-gray-500">{{ $appointment->client->phone ?? 'Sin teléfono' }}</div>
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-dark font-bold mr-3 border border-slate-200 overflow-hidden">
+                                        @if($appointment->client->photo)
+                                            <img src="{{ asset($appointment->client->photo) }}" class="w-full h-full object-cover rounded-full" loading="lazy">
+                                        @else
+                                            {{ substr($appointment->client->name, 0, 1) }}
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-slate-dark">{{ $appointment->client->name }}</div>
+                                        <div class="text-xs text-gray-500">{{ $appointment->client->phone ?? 'Sin teléfono' }}</div>
+                                    </div>
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-slate-dark">
-                                    <i class="fa-solid fa-scissors text-xs text-gray-400 mr-1"></i> {{ $appointment->barber->name }}
-                                </div>
-                                <div class="text-xs text-gray-500 mt-1">
-                                    <span class="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200">{{ $appointment->service->name }}</span>
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-full bg-bronze-gold/10 flex items-center justify-center text-bronze-gold font-bold mr-3 border border-bronze-gold/20 overflow-hidden">
+                                        @if($appointment->barber->photo)
+                                            <img src="{{ asset($appointment->barber->photo) }}" class="w-full h-full object-cover rounded-full" loading="lazy">
+                                        @else
+                                            {{ substr($appointment->barber->name, 0, 1) }}
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-slate-dark">
+                                            {{ $appointment->barber->name }}
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            <span class="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200">{{ $appointment->service->name }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

@@ -209,7 +209,7 @@ class AppointmentManager extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.appointment-manager', [
+        return view('livewire.admin.appointments.index', [
             'appointments' => $appointments,
             'clientsList' => Client::orderBy('name')->get(),
             'barbersList' => Barber::orderBy('name')->get(),

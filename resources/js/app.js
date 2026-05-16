@@ -4,8 +4,7 @@ import Swal from 'sweetalert2';
 window.Swal = Swal;
 
 document.addEventListener('livewire:init', () => {
-    Livewire.on('swal', (event) => {
-        const data = event[0];
+    const handleSwal = (data) => {
         Swal.fire({
             title: data.title || '',
             text: data.text || '',
@@ -13,6 +12,14 @@ document.addEventListener('livewire:init', () => {
             timer: data.timer || null,
             showConfirmButton: data.showConfirmButton ?? true,
         });
+    };
+
+    Livewire.on('swal', (event) => {
+        handleSwal(event[0]);
+    });
+
+    window.addEventListener('swal', (event) => {
+        handleSwal(event.detail);
     });
 
     Livewire.on('swal:confirm', (event) => {

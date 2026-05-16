@@ -10,7 +10,12 @@ class Client extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected $fillable = ['name', 'phone', 'email'];
+    protected $fillable = ['user_id', 'name', 'phone', 'email', 'address', 'photo'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function appointments()
     {

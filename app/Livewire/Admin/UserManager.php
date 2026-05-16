@@ -19,36 +19,8 @@ class UserManager extends Component
     public $search = '';
     public $sortField = 'id';
     public $sortDirection = 'desc';
-    
-    // Modal state
-    public $isModalOpen = false;
-    public $isEditing = false;
-    
-    // Form fields
-    public $userId;
-    public $name;
-    public $email;
-    public $password;
-    public $role = 'client';
 
     protected $listeners = ['deleteConfirmed' => 'delete'];
-
-    protected function rules()
-    {
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->userId)],
-            'role' => 'required|string|in:client,barber,admin,super_admin',
-        ];
-
-        if (!$this->isEditing) {
-            $rules['password'] = 'required|string|min:8';
-        } else {
-            $rules['password'] = 'nullable|string|min:8';
-        }
-
-        return $rules;
-    }
 
     public function updatingSearch()
     {
@@ -67,82 +39,12 @@ class UserManager extends Component
 
     public function create()
     {
-        $this->resetForm();
-        $this->isEditing = false;
-        $this->isModalOpen = true;
+        return redirect()->route('users.create');
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $this->userId = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->role = $user->role;
-        $this->password = ''; // Don't show password
-        
-        $this->isEditing = true;
-        $this->isModalOpen = true;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->isEditing) {
-            $user = User::find($this->userId);
-            
-            $data = [
-                'name' => $this->name,
-                'email' => $this->email,
-                'role' => $this->role,
-            ];
-
-            if (!empty($this->password)) {
-                $data['password'] = Hash::make($this->password);
-            }
-
-            $user->update($data);
-
-            $this->dispatch('swal', [
-                'title' => 'Usuario Actualizado',
-                'text' => 'Los datos se actualizaron correctamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        } else {
-            User::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => Hash::make($this->password),
-                'role' => $this->role,
-            ]);
-
-            // Sync to clients or barbers table
-            if ($this->role === 'client') {
-                Client::create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'phone' => null, // Phone can be updated later in ClientManager
-                ]);
-            } elseif ($this->role === 'barber') {
-                Barber::create([
-                    'name' => $this->name,
-                    'specialty' => 'General', // Default specialty
-                ]);
-            }
-
-            $this->dispatch('swal', [
-                'title' => 'Usuario Creado',
-                'text' => 'El usuario fue registrado exitosamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        }
-
-        $this->closeModal();
+        return redirect()->route('users.edit', $id);
     }
 
     public function confirmDelete($id)
@@ -188,22 +90,6 @@ class UserManager extends Component
         }
     }
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-    }
-
-    private function resetForm()
-    {
-        $this->userId = null;
-        $this->name = '';
-        $this->email = '';
-        $this->password = '';
-        $this->role = 'client';
-        $this->resetValidation();
-    }
-
     public function render()
     {
         $users = User::where('name', 'like', '%' . $this->search . '%')
@@ -212,7 +98,7 @@ class UserManager extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.user-manager', [
+        return view('livewire.admin.users.index', [
             'users' => $users
         ]);
     }

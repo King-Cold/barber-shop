@@ -15,25 +15,8 @@ class BarberManager extends Component
     public $search = '';
     public $sortField = 'id';
     public $sortDirection = 'desc';
-    
-    // Modal state
-    public $isModalOpen = false;
-    public $isEditing = false;
-    
-    // Form fields
-    public $barberId;
-    public $name;
-    public $specialty;
 
     protected $listeners = ['deleteConfirmed' => 'delete'];
-
-    protected function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'specialty' => 'nullable|string|max:255',
-        ];
-    }
 
     public function updatingSearch()
     {
@@ -52,54 +35,12 @@ class BarberManager extends Component
 
     public function create()
     {
-        $this->resetForm();
-        $this->isEditing = false;
-        $this->isModalOpen = true;
+        return redirect()->route('barbers.create');
     }
 
     public function edit($id)
     {
-        $barber = Barber::findOrFail($id);
-        $this->barberId = $barber->id;
-        $this->name = $barber->name;
-        $this->specialty = $barber->specialty;
-        
-        $this->isEditing = true;
-        $this->isModalOpen = true;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->isEditing) {
-            $barber = Barber::find($this->barberId);
-            $barber->update([
-                'name' => $this->name,
-                'specialty' => $this->specialty,
-            ]);
-            $this->dispatch('swal', [
-                'title' => 'Barbero Actualizado',
-                'text' => 'Los datos se actualizaron correctamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        } else {
-            Barber::create([
-                'name' => $this->name,
-                'specialty' => $this->specialty,
-            ]);
-            $this->dispatch('swal', [
-                'title' => 'Barbero Creado',
-                'text' => 'El barbero fue registrado exitosamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        }
-
-        $this->closeModal();
+        return redirect()->route('barbers.edit', $id);
     }
 
     public function confirmDelete($id)
@@ -127,20 +68,6 @@ class BarberManager extends Component
         }
     }
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-    }
-
-    private function resetForm()
-    {
-        $this->barberId = null;
-        $this->name = '';
-        $this->specialty = '';
-        $this->resetValidation();
-    }
-
     public function render()
     {
         $barbers = Barber::where('name', 'like', '%' . $this->search . '%')
@@ -148,7 +75,7 @@ class BarberManager extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.barber-manager', [
+        return view('livewire.admin.barbers.index', [
             'barbers' => $barbers
         ]);
     }

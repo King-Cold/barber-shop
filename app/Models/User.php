@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'photo',
     ];
 
     /**
@@ -46,5 +47,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function barber()
+    {
+        return $this->hasOne(Barber::class);
+    }
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
     }
 }

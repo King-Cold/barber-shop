@@ -27,15 +27,37 @@
                     </button>
 
                     <div class="hidden lg:block">
-                        <h2 class="text-xl font-semibold text-gray-800">{{ $header ?? 'Welcome back!' }}</h2>
+                        <h2 class="text-xl font-bold text-slate-dark uppercase">
+                            @if(request()->routeIs('dashboard'))
+                                <i class="fa-solid fa-house mr-2 text-bronze-gold"></i> Dashboard
+                            @elseif(request()->routeIs('appointments*'))
+                                <i class="fa-solid fa-calendar-check mr-2 text-bronze-gold "></i> Citas
+                            @elseif(request()->routeIs('clients*'))
+                                <i class="fa-solid fa-users mr-2 text-bronze-gold"></i> Clientes
+                            @elseif(request()->routeIs('barbers*'))
+                                <i class="fa-solid fa-scissors mr-2 text-bronze-gold"></i> Barberos
+                            @elseif(request()->routeIs('services*'))
+                                <i class="fa-solid fa-spray-can mr-2 text-bronze-gold"></i> Servicios
+                            @elseif(request()->routeIs('users*'))
+                                <i class="fa-solid fa-user-shield mr-2 text-bronze-gold"></i> Usuarios
+                            @elseif(request()->routeIs('profile'))
+                                <i class="fa-solid fa-user-gear mr-2 text-bronze-gold"></i> Mi Perfil
+                            @else
+                                {{ $header ?? '' }}
+                            @endif
+                        </h2>
                     </div>
 
                     <div class="flex items-center space-x-6" x-data="{ open: false }">
                         <div class="relative">
                             <button @click="open = !open" class="flex items-center space-x-3 focus:outline-none">
                                 <span class="hidden sm:inline-block font-medium text-gray-700">{{ Auth::user()->name }}</span>
-                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200">
-                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200 overflow-hidden">
+                                    @if(Auth::user()->photo)
+                                        <img src="{{ asset(Auth::user()->photo) }}" class="w-full h-full object-cover">
+                                    @else
+                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                    @endif
                                 </div>
                                 <i class="fa-solid fa-chevron-down text-xs text-gray-400 transition-transform" :class="open ? 'rotate-180' : ''"></i>
                             </button>
@@ -62,7 +84,16 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="flex-1 overflow-y-auto p-8 bg-chalk-white">
+                <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50">
+                    @if(session()->has('swal'))
+                        <script>
+                            window.addEventListener('DOMContentLoaded', () => {
+                                window.dispatchEvent(new CustomEvent('swal', { 
+                                    detail: @json(session('swal')) 
+                                }));
+                            });
+                        </script>
+                    @endif
                     <div class="max-w-7xl mx-auto">
                         {{ $slot }}
                     </div>

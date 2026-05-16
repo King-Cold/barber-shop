@@ -15,27 +15,8 @@ class ClientManager extends Component
     public $search = '';
     public $sortField = 'id';
     public $sortDirection = 'desc';
-    
-    // Modal state
-    public $isModalOpen = false;
-    public $isEditing = false;
-    
-    // Form fields
-    public $clientId;
-    public $name;
-    public $email;
-    public $phone;
 
     protected $listeners = ['deleteConfirmed' => 'delete'];
-
-    protected function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255|unique:clients,email,' . $this->clientId,
-            'phone' => 'nullable|string|max:20',
-        ];
-    }
 
     public function updatingSearch()
     {
@@ -54,57 +35,12 @@ class ClientManager extends Component
 
     public function create()
     {
-        $this->resetForm();
-        $this->isEditing = false;
-        $this->isModalOpen = true;
+        return redirect()->route('clients.create');
     }
 
     public function edit($id)
     {
-        $client = Client::findOrFail($id);
-        $this->clientId = $client->id;
-        $this->name = $client->name;
-        $this->email = $client->email;
-        $this->phone = $client->phone;
-        
-        $this->isEditing = true;
-        $this->isModalOpen = true;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->isEditing) {
-            $client = Client::find($this->clientId);
-            $client->update([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-            ]);
-            $this->dispatch('swal', [
-                'title' => 'Cliente Actualizado',
-                'text' => 'Los datos se actualizaron correctamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        } else {
-            Client::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-            ]);
-            $this->dispatch('swal', [
-                'title' => 'Cliente Creado',
-                'text' => 'El cliente fue registrado exitosamente.',
-                'icon' => 'success',
-                'timer' => 2000,
-                'showConfirmButton' => false
-            ]);
-        }
-
-        $this->closeModal();
+        return redirect()->route('clients.edit', $id);
     }
 
     public function confirmDelete($id)
@@ -132,21 +68,6 @@ class ClientManager extends Component
         }
     }
 
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-        $this->resetForm();
-    }
-
-    private function resetForm()
-    {
-        $this->clientId = null;
-        $this->name = '';
-        $this->email = '';
-        $this->phone = '';
-        $this->resetValidation();
-    }
-
     public function render()
     {
         $clients = Client::where('name', 'like', '%' . $this->search . '%')
@@ -155,7 +76,7 @@ class ClientManager extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.client-manager', [
+        return view('livewire.admin.clients.index', [
             'clients' => $clients
         ]);
     }
