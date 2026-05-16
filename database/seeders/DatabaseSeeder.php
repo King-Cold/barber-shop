@@ -16,11 +16,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1 Admin User
-        User::factory()->create([
-            'name' => 'Administrator',
-            'email' => 'admin@barber.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'role' => 'admin',
+        if (!User::where('email', 'admin@barber.com')->exists()) {
+            User::factory()->create([
+                'name' => 'Administrator',
+                'email' => 'admin@barber.com',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'role' => 'admin',
+            ]);
+        }
+
+        $this->call([
+            ServiceSeeder::class,
+            BarberSeeder::class,
+            ClientSeeder::class,
         ]);
     }
 }

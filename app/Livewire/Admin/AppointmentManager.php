@@ -10,6 +10,8 @@ use App\Models\Client;
 use App\Models\Barber;
 use App\Models\Service;
 use Carbon\Carbon;
+use App\Mail\AppointmentConfirmed;
+use Illuminate\Support\Facades\Mail;
 
 #[Layout('layouts.app')]
 class AppointmentManager extends Component
@@ -133,7 +135,7 @@ class AppointmentManager extends Component
                 'showConfirmButton' => false
             ]);
         } else {
-            Appointment::create([
+            $appointment = Appointment::create([
                 'client_id' => $this->client_id,
                 'barber_id' => $this->barber_id,
                 'service_id' => $this->service_id,
@@ -141,9 +143,20 @@ class AppointmentManager extends Component
                 'time' => $timeString,
                 'status' => $this->status,
             ]);
+
+            // Send confirmation email
+            try {
+                if ($appointment->client && $appointment->client->email) {
+                    Mail::to($appointment->client->email)->send(new AppointmentConfirmed($appointment));
+                }
+            } catch (\Exception $e) {
+                // Log error or notify admin, but don't stop the flow
+                \Illuminate\Support\Facades\Log::error("Error sending appointment email: " . $e->getMessage());
+            }
+
             $this->dispatch('swal', [
                 'title' => 'Cita Registrada',
-                'text' => 'La cita se agendó correctamente.',
+                'text' => 'La cita se agendó correctamente y se envió un correo al cliente.',
                 'icon' => 'success',
                 'timer' => 2000,
                 'showConfirmButton' => false

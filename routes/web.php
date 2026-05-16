@@ -37,3 +37,14 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Public route for customer appointment confirmation
+Route::get('appointments/{appointment}/confirm', function (App\Models\Appointment $appointment) {
+    if (! request()->hasValidSignature()) {
+        abort(401, 'El enlace de confirmación ha expirado o es inválido.');
+    }
+
+    $appointment->update(['status' => 'confirmed']);
+
+    return view('appointments.confirmed-success', compact('appointment'));
+})->name('appointments.client-confirm');
