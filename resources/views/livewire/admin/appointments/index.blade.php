@@ -115,6 +115,9 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="{{ route('appointments.ticket', $appointment->id) }}" target="_blank" class="text-emerald-600 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 p-2 rounded-md transition-colors mr-2 inline-block" title="Descargar Ticket">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </a>
                                 <button wire:click="edit({{ $appointment->id }})" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-md transition-colors mr-2">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>

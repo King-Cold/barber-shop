@@ -57,10 +57,11 @@ class ClientManager extends Component
     {
         $client = Client::find($id);
         if ($client) {
+            $clientName = $client->name;
             $client->delete();
             $this->dispatch('swal', [
                 'title' => '¡Eliminado!',
-                'text' => 'El cliente ha sido eliminado.',
+                'text' => "El cliente {$clientName} ha sido eliminado correctamente.",
                 'icon' => 'success',
                 'timer' => 2000,
                 'showConfirmButton' => false

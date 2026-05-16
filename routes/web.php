@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('services/{service}/edit', \App\Livewire\Admin\ServiceForm::class)->name('services.edit');
 
     Route::get('appointments', \App\Livewire\Admin\AppointmentManager::class)->name('appointments');
+    Route::get('appointments/{appointment}/ticket', [\App\Http\Controllers\AppointmentTicketController::class, 'download'])->name('appointments.ticket');
+    Route::get('appointments/{appointment}/preview', [\App\Http\Controllers\AppointmentTicketController::class, 'preview'])->name('appointments.preview');
 });
 
 require __DIR__.'/auth.php';

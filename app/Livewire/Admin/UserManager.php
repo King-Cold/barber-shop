@@ -74,6 +74,7 @@ class UserManager extends Component
     {
         $user = User::find($id);
         if ($user) {
+            $userName = $user->name;
             // Extra security check
             if ($user->id === auth()->id()) {
                 return;
@@ -82,7 +83,7 @@ class UserManager extends Component
             $user->delete();
             $this->dispatch('swal', [
                 'title' => '¡Eliminado!',
-                'text' => 'El usuario ha sido eliminado.',
+                'text' => "El usuario {$userName} ha sido eliminado correctamente.",
                 'icon' => 'success',
                 'timer' => 2000,
                 'showConfirmButton' => false

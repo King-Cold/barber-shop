@@ -57,10 +57,11 @@ class ServiceManager extends Component
     {
         $service = Service::find($id);
         if ($service) {
+            $serviceName = $service->name;
             $service->delete();
             $this->dispatch('swal', [
                 'title' => '¡Eliminado!',
-                'text' => 'El servicio ha sido eliminado.',
+                'text' => "El servicio {$serviceName} ha sido eliminado correctamente.",
                 'icon' => 'success',
                 'timer' => 2000,
                 'showConfirmButton' => false

@@ -165,13 +165,14 @@ class AppointmentManager extends Component
 
     public function delete($id)
     {
-        $appointment = Appointment::find($id);
+        $appointment = Appointment::with('client')->find($id);
         if ($appointment) {
+            $clientName = $appointment->client->name;
             // Soft delete is handled automatically by the model's SoftDeletes trait
             $appointment->delete();
             $this->dispatch('swal', [
                 'title' => '¡Eliminada!',
-                'text' => 'La cita ha sido cancelada/eliminada exitosamente.',
+                'text' => "La cita de {$clientName} ha sido eliminada correctamente.",
                 'icon' => 'success',
                 'timer' => 2000,
                 'showConfirmButton' => false

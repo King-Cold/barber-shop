@@ -57,10 +57,11 @@ class BarberManager extends Component
     {
         $barber = Barber::find($id);
         if ($barber) {
+            $barberName = $barber->name;
             $barber->delete();
             $this->dispatch('swal', [
                 'title' => '¡Eliminado!',
-                'text' => 'El barbero ha sido eliminado.',
+                'text' => "El barbero {$barberName} ha sido eliminado correctamente.",
                 'icon' => 'success',
                 'timer' => 2000,
                 'showConfirmButton' => false
