@@ -13,12 +13,39 @@ class ClientManager extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
     public $sortField = 'id';
     public $sortDirection = 'desc';
 
+    public $selectedClient = null;
+    public $viewingClientAppointments = null;
+
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
+    public function viewAppointments($clientId)
+    {
+        $this->selectedClient = Client::find($clientId);
+        if ($this->selectedClient) {
+            $this->viewingClientAppointments = $this->selectedClient->appointments()
+                ->with(['barber', 'service'])
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
+                ->get();
+        }
+    }
+
+    public function closeAppointmentsModal()
+    {
+        $this->selectedClient = null;
+        $this->viewingClientAppointments = null;
+    }
+
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -75,7 +102,7 @@ class ClientManager extends Component
             ->orWhere('email', 'like', '%' . $this->search . '%')
             ->orWhere('phone', 'like', '%' . $this->search . '%')
             ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.admin.clients.index', [
             'clients' => $clients

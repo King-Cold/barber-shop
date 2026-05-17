@@ -8,16 +8,29 @@
     </div>
 
     <!-- Top Action Bar -->
-    <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
-        <div class="relative w-full md:w-1/3">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <i class="fa-solid fa-search text-gray-400"></i>
-            </div>
-            <input wire:model.live.debounce.300ms="search" type="text" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por nombre o especialidad...">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div class="flex items-center space-x-2 w-full md:w-auto">
+            <span class="text-sm text-gray-500">Mostrar</span>
+            <select wire:model.live="perPage" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block p-2 shadow-sm">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="text-sm text-gray-500">registros</span>
         </div>
-        <a href="{{ route('barbers.create') }}" class="w-full md:w-auto bg-slate-dark hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center transition-colors shadow-sm">
-            <i class="fa-solid fa-plus mr-2"></i> Nuevo Barbero
-        </a>
+        
+        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+            <div class="relative w-full md:w-80">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fa-solid fa-search text-gray-400"></i>
+                </div>
+                <input wire:model.live.debounce.300ms="search" type="text" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por nombre o especialidad...">
+            </div>
+            <a href="{{ route('barbers.create') }}" class="w-full md:w-auto bg-slate-dark hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center transition-colors shadow-sm whitespace-nowrap">
+                <i class="fa-solid fa-plus mr-2"></i> Nuevo Barbero
+            </a>
+        </div>
     </div>
 
     <!-- Table -->
@@ -86,6 +99,9 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="{{ route('barbers.records', $barber->id) }}" class="inline-block text-vintage-gold hover:text-yellow-600 bg-vintage-gold/10 hover:bg-vintage-gold/20 p-2 rounded-md transition-colors mr-2" title="Ver Historial de Citas" wire:navigate>
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
                                 <a href="{{ route('barbers.edit', $barber->id) }}" class="inline-block text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-md transition-colors mr-2">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
@@ -107,10 +123,15 @@
                 </tbody>
             </table>
         </div>
-        @if($barbers->hasPages())
-            <div class="px-6 py-4 border-t border-gray-100">
-                {{ $barbers->links() }}
+        <div class="px-6 py-4 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div class="text-sm text-gray-500">
+                Mostrando {{ $barbers->firstItem() ?? 0 }} a {{ $barbers->lastItem() ?? 0 }} de {{ $barbers->total() }} registros
             </div>
-        @endif
+            @if($barbers->hasPages())
+                <div class="w-full md:w-auto">
+                    {{ $barbers->links() }}
+                </div>
+            @endif
+        </div>
     </div>
 </div>

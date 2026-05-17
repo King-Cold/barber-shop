@@ -8,16 +8,29 @@
     </div>
 
     <!-- Top Action Bar -->
-    <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
-        <div class="relative w-full md:w-1/3">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <i class="fa-solid fa-search text-gray-400"></i>
-            </div>
-            <input wire:model.live.debounce.300ms="search" type="text" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por nombre de servicio...">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div class="flex items-center space-x-2 w-full md:w-auto">
+            <span class="text-sm text-gray-500">Mostrar</span>
+            <select wire:model.live="perPage" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block p-2 shadow-sm">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="text-sm text-gray-500">registros</span>
         </div>
-        <a href="{{ route('services.create') }}" class="w-full md:w-auto bg-slate-dark hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center transition-colors shadow-sm">
-            <i class="fa-solid fa-plus mr-2"></i> Nuevo Servicio
-        </a>
+        
+        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+            <div class="relative w-full md:w-80">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fa-solid fa-search text-gray-400"></i>
+                </div>
+                <input wire:model.live.debounce.300ms="search" type="text" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por nombre de servicio...">
+            </div>
+            <a href="{{ route('services.create') }}" class="w-full md:w-auto bg-slate-dark hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center transition-colors shadow-sm whitespace-nowrap">
+                <i class="fa-solid fa-plus mr-2"></i> Nuevo Servicio
+            </a>
+        </div>
     </div>
 
     <!-- Table -->
@@ -89,10 +102,15 @@
                 </tbody>
             </table>
         </div>
-        @if($services->hasPages())
-            <div class="px-6 py-4 border-t border-gray-100">
-                {{ $services->links() }}
+        <div class="px-6 py-4 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div class="text-sm text-gray-500">
+                Mostrando {{ $services->firstItem() ?? 0 }} a {{ $services->lastItem() ?? 0 }} de {{ $services->total() }} registros
             </div>
-        @endif
+            @if($services->hasPages())
+                <div class="w-full md:w-auto">
+                    {{ $services->links() }}
+                </div>
+            @endif
+        </div>
     </div>
 </div>

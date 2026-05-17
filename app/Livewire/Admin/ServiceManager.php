@@ -13,12 +13,18 @@ class ServiceManager extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
     public $sortField = 'id';
     public $sortDirection = 'desc';
 
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -73,7 +79,7 @@ class ServiceManager extends Component
     {
         $services = Service::where('name', 'like', '%' . $this->search . '%')
             ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.admin.services.index', [
             'services' => $services

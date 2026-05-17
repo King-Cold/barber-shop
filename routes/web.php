@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('barbers', \App\Livewire\Admin\BarberManager::class)->name('barbers');
         Route::get('barbers/create', \App\Livewire\Admin\BarberForm::class)->name('barbers.create');
         Route::get('barbers/{barber}/edit', \App\Livewire\Admin\BarberForm::class)->name('barbers.edit');
+        Route::get('barbers/{barber}/records', \App\Livewire\Admin\BarberRecords::class)->name('barbers.records');
 
         // Services
         Route::get('services', \App\Livewire\Admin\ServiceManager::class)->name('services');
@@ -35,9 +36,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('clients', \App\Livewire\Admin\ClientManager::class)->name('clients');
         Route::get('clients/create', \App\Livewire\Admin\ClientForm::class)->name('clients.create');
         Route::get('clients/{client}/edit', \App\Livewire\Admin\ClientForm::class)->name('clients.edit');
+        Route::get('clients/{client}/records', \App\Livewire\Admin\ClientRecords::class)->name('clients.records');
 
         // Appointments
         Route::get('appointments', \App\Livewire\Admin\AppointmentManager::class)->name('appointments');
+        Route::get('appointments/create', \App\Livewire\Admin\AppointmentForm::class)->name('appointments.create');
+        Route::get('appointments/{appointment}/edit', \App\Livewire\Admin\AppointmentForm::class)->name('appointments.edit');
         Route::get('appointments/{appointment}/ticket', [\App\Http\Controllers\AppointmentTicketController::class, 'download'])->name('appointments.ticket');
         Route::get('appointments/{appointment}/preview', [\App\Http\Controllers\AppointmentTicketController::class, 'preview'])->name('appointments.preview');
     });

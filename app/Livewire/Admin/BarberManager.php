@@ -13,12 +13,39 @@ class BarberManager extends Component
     use WithPagination;
 
     public $search = '';
+    public $perPage = 10;
     public $sortField = 'id';
     public $sortDirection = 'desc';
 
+    public $selectedBarber = null;
+    public $viewingBarberAppointments = null;
+
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
+    public function viewAppointments($barberId)
+    {
+        $this->selectedBarber = Barber::find($barberId);
+        if ($this->selectedBarber) {
+            $this->viewingBarberAppointments = $this->selectedBarber->appointments()
+                ->with(['client', 'service'])
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
+                ->get();
+        }
+    }
+
+    public function closeAppointmentsModal()
+    {
+        $this->selectedBarber = null;
+        $this->viewingBarberAppointments = null;
+    }
+
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -74,7 +101,7 @@ class BarberManager extends Component
         $barbers = Barber::where('name', 'like', '%' . $this->search . '%')
             ->orWhere('specialty', 'like', '%' . $this->search . '%')
             ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         return view('livewire.admin.barbers.index', [
             'barbers' => $barbers
