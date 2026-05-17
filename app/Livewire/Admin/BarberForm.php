@@ -22,6 +22,7 @@ class BarberForm extends Component
     public $specialty;
     public $phone;
     public $email;
+    public $address;
     public $photo; // For uploading
     public $currentPhoto; // For displaying existing
 
@@ -34,6 +35,7 @@ class BarberForm extends Component
             $this->specialty = $barber->specialty;
             $this->phone = $barber->phone;
             $this->email = $barber->email;
+            $this->address = $barber->address;
             $this->currentPhoto = $barber->photo;
         } else {
             $this->specialty = 'General';
@@ -47,6 +49,7 @@ class BarberForm extends Component
             'specialty' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'email' => ['required', 'email', Rule::unique('barbers', 'email')->ignore($this->barber?->id)],
+            'address' => 'nullable|string|max:500',
             'photo' => 'nullable|image|max:2048', // 2MB Max
         ];
     }
@@ -73,6 +76,7 @@ class BarberForm extends Component
                 'specialty' => $this->specialty,
                 'phone' => $this->phone,
                 'email' => $this->email,
+                'address' => $this->address,
                 'photo' => $photoPath,
             ]);
 
@@ -87,6 +91,7 @@ class BarberForm extends Component
                 'specialty' => $this->specialty,
                 'phone' => $this->phone,
                 'email' => $this->email,
+                'address' => $this->address,
                 'photo' => $photoPath,
             ]);
 

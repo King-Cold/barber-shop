@@ -12,25 +12,31 @@ class BarberSeeder extends Seeder
      */
     public function run(): void
     {
-        Barber::create([
-            'name' => 'Antonio López',
-            'specialty' => 'Cortes Clásicos y Navaja',
-            'email' => 'antonio@barbershop.com',
-            'phone' => '555-123-4567'
-        ]);
+        Barber::updateOrCreate(
+            ['email' => 'antonio@barbershop.com'],
+            [
+                'name' => 'Antonio López',
+                'specialty' => 'Cortes Clásicos y Navaja',
+                'phone' => '555-123-4567'
+            ]
+        );
 
-        Barber::create([
-            'name' => 'Ricardo Silva',
-            'specialty' => 'Urban Style & Fade Masters',
-            'email' => 'ricardo@barbershop.com',
-            'phone' => '555-987-6543'
-        ]);
+        Barber::updateOrCreate(
+            ['email' => 'ricardo@barbershop.com'],
+            [
+                'name' => 'Ricardo Silva',
+                'specialty' => 'Urban Style & Fade Masters',
+                'phone' => '555-987-6543'
+            ]
+        );
 
-        Barber::create([
-            'name' => 'Gabriel Martínez',
-            'specialty' => 'Barbería Tradicional y Barba',
-            'email' => 'gabriel@barbershop.com',
-            'phone' => '555-456-7890'
-        ]);
+        Barber::updateOrCreate(
+            ['email' => 'gabriel@barbershop.com'],
+            [
+                'name' => 'Gabriel Martínez',
+                'specialty' => 'Barbería Tradicional y Barba',
+                'phone' => '555-456-7890'
+            ]
+        );
     }
 }

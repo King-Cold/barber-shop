@@ -61,6 +61,9 @@
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Teléfono
                         </th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Dirección
+                        </th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -88,6 +91,9 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $client->phone ?? 'Sin teléfono' }}
                             </td>
+                            <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title="{{ $client->address }}">
+                                {{ $client->address ?? 'Sin dirección' }}
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <a href="{{ route('clients.records', $client->id) }}" class="inline-block text-vintage-gold hover:text-yellow-600 bg-vintage-gold/10 hover:bg-vintage-gold/20 p-2 rounded-md transition-colors mr-2" title="Ver Historial de Citas" wire:navigate>
                                     <i class="fa-solid fa-eye"></i>
@@ -102,7 +108,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-10 text-center text-gray-500">
+                            <td colspan="5" class="px-6 py-10 text-center text-gray-500">
                                 <div class="flex flex-col items-center">
                                     <i class="fa-solid fa-user-tag text-4xl text-gray-300 mb-3"></i>
                                     <p class="text-lg font-medium text-gray-600">No se encontraron clientes.</p>

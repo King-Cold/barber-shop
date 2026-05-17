@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailables\Attachment;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AppointmentReminder extends Mailable
 {
@@ -51,6 +53,13 @@ class AppointmentReminder extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $pdf = Pdf::loadView('pdf.appointment_ticket', [
+            'appointment' => $this->appointment
+        ]);
+
+        return [
+            Attachment::fromData(fn () => $pdf->output(), "Ticket_Cita_{$this->appointment->id}.pdf")
+                ->withMime('application/pdf'),
+        ];
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailables\Attachment;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BarberDailyAgenda extends Mailable
 {
@@ -53,6 +55,17 @@ class BarberDailyAgenda extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $tomorrow = \Carbon\Carbon::tomorrow()->toDateString();
+        
+        $pdf = Pdf::loadView('pdf.barber_agenda', [
+            'barber' => $this->barber,
+            'appointments' => $this->appointments,
+            'date' => $tomorrow
+        ]);
+
+        return [
+            Attachment::fromData(fn () => $pdf->output(), "Agenda_{$tomorrow}.pdf")
+                ->withMime('application/pdf'),
+        ];
     }
 }

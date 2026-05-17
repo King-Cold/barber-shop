@@ -45,7 +45,7 @@ class UserForm extends Component
         $rules = [
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->user?->id)],
-            'role_id' => 'required|integer|in:1,2',
+            'role_id' => 'required|integer|in:1,2,3,4',
             'photo' => 'nullable|image|max:2048',
         ];
 
@@ -73,6 +73,8 @@ class UserForm extends Component
             $photoPath = 'images/users/' . $photoName;
         }
 
+        $user = null;
+
         if ($this->isEditing) {
             $data = [
                 'name' => $this->name,
@@ -86,6 +88,7 @@ class UserForm extends Component
             }
 
             $this->user->update($data);
+            $user = $this->user;
 
             session()->flash('swal', [
                 'title' => 'Usuario Actualizado',
@@ -93,7 +96,7 @@ class UserForm extends Component
                 'icon' => 'success',
             ]);
         } else {
-            User::create([
+            $user = User::create([
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
@@ -103,9 +106,67 @@ class UserForm extends Component
 
             session()->flash('swal', [
                 'title' => 'Usuario Creado',
-                'text' => 'El nuevo administrador ha sido registrado.',
+                'text' => 'El nuevo usuario ha sido registrado.',
                 'icon' => 'success',
             ]);
+        }
+
+        // --- AUTOMATIC SYNC TO BARBERS AND CLIENTS ---
+        if ($user) {
+            if ($user->role_id == 3) {
+                // Unlink this user from any existing Client record
+                \App\Models\Client::where('user_id', $user->id)->update(['user_id' => null]);
+                
+                // Find or create the barber linked to this user or matching email
+                $barber = \App\Models\Barber::where('user_id', $user->id)
+                    ->orWhere('email', $user->email)
+                    ->first();
+                    
+                if ($barber) {
+                    $barber->update([
+                        'user_id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'photo' => $user->photo,
+                    ]);
+                } else {
+                    \App\Models\Barber::create([
+                        'user_id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'specialty' => 'General',
+                        'photo' => $user->photo,
+                    ]);
+                }
+            } elseif ($user->role_id == 4) {
+                // Unlink this user from any existing Barber record
+                \App\Models\Barber::where('user_id', $user->id)->update(['user_id' => null]);
+                
+                // Find or create the client linked to this user or matching email
+                $client = \App\Models\Client::where('user_id', $user->id)
+                    ->orWhere('email', $user->email)
+                    ->first();
+                    
+                if ($client) {
+                    $client->update([
+                        'user_id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'photo' => $user->photo,
+                    ]);
+                } else {
+                    \App\Models\Client::create([
+                        'user_id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'photo' => $user->photo,
+                    ]);
+                }
+            } else {
+                // Unlink this user from both Barbers and Clients
+                \App\Models\Barber::where('user_id', $user->id)->update(['user_id' => null]);
+                \App\Models\Client::where('user_id', $user->id)->update(['user_id' => null]);
+            }
         }
 
         return redirect()->route('users');

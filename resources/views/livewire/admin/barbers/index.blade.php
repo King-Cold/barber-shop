@@ -62,6 +62,9 @@
                             Teléfono
                         </th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Dirección
+                        </th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Especialidad
                         </th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Acciones</th>
@@ -92,6 +95,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $barber->phone ?? 'Sin teléfono' }}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title="{{ $barber->address }}">
+                                {{ $barber->address ?? 'Sin dirección' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200">

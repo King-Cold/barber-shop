@@ -9,7 +9,7 @@ class Barber extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['name', 'specialty', 'phone', 'email', 'address', 'photo'];
+    protected $fillable = ['user_id', 'name', 'specialty', 'phone', 'email', 'address', 'photo'];
 
     public function appointments()
     {

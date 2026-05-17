@@ -65,6 +65,8 @@
                         @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
+                    <!-- Role -->
+                    <div class="col-span-2 md:col-span-1">
                         <label for="role_id" class="block text-sm font-semibold text-gray-700 mb-2">Rol del Sistema <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -73,9 +75,12 @@
                             <select wire:model="role_id" id="role_id" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm bg-white">
                                 <option value="1">Administrador</option>
                                 <option value="2">Super Administrador</option>
+                                <option value="3">Barbero</option>
+                                <option value="4">Cliente</option>
                             </select>
                         </div>
                         @error('role_id') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
 
                     <div class="col-span-2 border-t border-gray-100 pt-6 mt-2">
                         <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Seguridad</h3>

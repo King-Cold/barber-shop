@@ -20,6 +20,7 @@ class ClientForm extends Component
     public $name;
     public $email;
     public $phone;
+    public $address;
     public $photo; // Upload
     public $currentPhoto; // Display
 
@@ -31,6 +32,7 @@ class ClientForm extends Component
             $this->name = $client->name;
             $this->email = $client->email;
             $this->phone = $client->phone;
+            $this->address = $client->address;
             $this->currentPhoto = $client->photo;
         }
     }
@@ -41,6 +43,7 @@ class ClientForm extends Component
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('clients', 'email')->ignore($this->client?->id)],
             'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
             'photo' => 'nullable|image|max:2048',
         ];
     }
@@ -65,6 +68,7 @@ class ClientForm extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
+                'address' => $this->address,
                 'photo' => $photoPath,
             ]);
 
@@ -78,6 +82,7 @@ class ClientForm extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
+                'address' => $this->address,
                 'photo' => $photoPath,
             ]);
 

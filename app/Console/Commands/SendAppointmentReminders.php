@@ -54,8 +54,8 @@ class SendAppointmentReminders extends Command
                     $this->line("Sent reminder to client: {$appointment->client->email}");
                     $clientCount++;
                 } catch (\Exception $e) {
-                    $this->warn("Mailtrap limit hit for client {$appointment->client->email}. Retrying in 6 seconds...");
-                    sleep(6);
+                    $this->warn("Mailtrap limit hit for client {$appointment->client->email}. Retrying in 11 seconds...");
+                    sleep(11);
                     try {
                         Mail::to($appointment->client->email)->send(new AppointmentReminder($appointment));
                         $this->line("Sent reminder to client (after retry): {$appointment->client->email}");
@@ -66,7 +66,7 @@ class SendAppointmentReminders extends Command
                 }
                 
                 // General safety pause
-                sleep(2);
+                sleep(3);
             }
         }
 
@@ -82,8 +82,8 @@ class SendAppointmentReminders extends Command
                     $this->line("Sent daily agenda to barber: {$barber->email} (Total appointments: {$appointmentsList->count()})");
                     $barberCount++;
                 } catch (\Exception $e) {
-                    $this->warn("Mailtrap limit hit for barber {$barber->email}. Retrying in 6 seconds...");
-                    sleep(6);
+                    $this->warn("Mailtrap limit hit for barber {$barber->email}. Retrying in 11 seconds...");
+                    sleep(11);
                     try {
                         Mail::to($barber->email)->send(new BarberDailyAgenda($barber, $appointmentsList));
                         $this->line("Sent daily agenda to barber (after retry): {$barber->email}");
@@ -94,7 +94,7 @@ class SendAppointmentReminders extends Command
                 }
                 
                 // General safety pause
-                sleep(2);
+                sleep(3);
             }
         }
 

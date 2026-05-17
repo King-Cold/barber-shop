@@ -71,6 +71,13 @@
                         <input wire:model="email" type="email" id="email" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
                         @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
+
+                    <!-- Address -->
+                    <div class="col-span-2">
+                        <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
+                        <input wire:model="address" type="text" id="address" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm" placeholder="Ingresa la dirección del barbero">
+                        @error('address') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
                 </div>
             </div>
 

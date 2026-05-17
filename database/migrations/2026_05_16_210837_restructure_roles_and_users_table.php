@@ -37,19 +37,6 @@ return new class extends Migration
             $table->dropColumn('role');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
-
-        // 3. Cleanup Barbers and Clients (remove user_id)
-        Schema::table('barbers', function (Blueprint $table) {
-            if (Schema::hasColumn('barbers', 'user_id')) {
-                $table->dropConstrainedForeignId('user_id');
-            }
-        });
-
-        Schema::table('clients', function (Blueprint $table) {
-            if (Schema::hasColumn('clients', 'user_id')) {
-                $table->dropConstrainedForeignId('user_id');
-            }
-        });
     }
 
     /**
@@ -57,14 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-        });
-
-        Schema::table('barbers', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-        });
-
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['role_id']);
             $table->dropColumn('role_id');

@@ -22,7 +22,7 @@
             @include('layouts.sidebar')
 
             <!-- Main Content Area -->
-            <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
+            <div class="flex-1 flex flex-col min-h-screen overflow-hidden lg:pl-64">
                 <!-- Top Navbar -->
                 <header class="h-20 bg-barber-black border-b border-white/5 flex items-center justify-between px-8 shadow-lg z-30">
                     <!-- Sidebar Mobile Toggle -->
