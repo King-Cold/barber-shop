@@ -22,7 +22,7 @@
                 <div class="md:col-span-1 flex flex-col items-center">
                     <label class="block text-sm font-semibold text-gray-700 mb-4 w-full text-center">Foto de Perfil</label>
                     <div class="relative group">
-                        <div class="w-48 h-48 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden transition-all group-hover:border-bronze-gold">
+                        <div class="w-48 h-48 rounded-full bg-gray-100 border-2 border-dashed flex items-center justify-center overflow-hidden transition-all @error('photo') border-red-500 @else border-gray-300 group-hover:border-bronze-gold @enderror">
                             @if ($photo)
                                 <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
                             @elseif ($currentPhoto)
@@ -48,7 +48,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-user text-gray-400 text-xs"></i>
                             </div>
-                            <input wire:model="name" type="text" id="name" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                            <input wire:model="name" type="text" id="name" class="block w-full pl-10 pr-3 py-3 border rounded-lg text-sm transition-all shadow-sm @error('name') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         </div>
                         @error('name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
@@ -60,7 +60,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-envelope text-gray-400 text-xs"></i>
                             </div>
-                            <input wire:model="email" type="email" id="email" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                            <input wire:model="email" type="email" id="email" class="block w-full pl-10 pr-3 py-3 border rounded-lg text-sm transition-all shadow-sm @error('email') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         </div>
                         @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
@@ -72,7 +72,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-user-tag text-gray-400 text-xs"></i>
                             </div>
-                            <select wire:model="role_id" id="role_id" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm bg-white">
+                            <select wire:model="role_id" id="role_id" class="block w-full pl-10 pr-3 py-3 border rounded-lg text-sm transition-all shadow-sm bg-white @error('role_id') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                                 <option value="1">Administrador</option>
                                 <option value="2">Super Administrador</option>
                                 <option value="3">Barbero</option>
@@ -94,7 +94,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fa-solid fa-lock text-gray-400 text-xs"></i>
                             </div>
-                            <input wire:model="password" type="password" id="password" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm" placeholder="••••••••">
+                            <input wire:model="password" type="password" id="password" class="block w-full pl-10 pr-3 py-3 border rounded-lg text-sm transition-all shadow-sm @error('password') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror" placeholder="••••••••">
                         </div>
                         @error('password') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>

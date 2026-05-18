@@ -22,7 +22,7 @@
                 <div class="md:col-span-1 flex flex-col items-center">
                     <label class="block text-sm font-semibold text-gray-700 mb-4 w-full text-center">Foto de Perfil</label>
                     <div class="relative group">
-                        <div class="w-48 h-48 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden transition-all group-hover:border-bronze-gold">
+                        <div class="w-48 h-48 rounded-full bg-gray-100 border-2 border-dashed flex items-center justify-center overflow-hidden transition-all @error('photo') border-red-500 @else border-gray-300 group-hover:border-bronze-gold @enderror">
                             @if ($photo)
                                 <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
                             @elseif ($currentPhoto)
@@ -48,14 +48,14 @@
                     <!-- Name -->
                     <div class="col-span-2">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nombre Completo <span class="text-red-500">*</span></label>
-                        <input wire:model="name" type="text" id="name" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                        <input wire:model="name" type="text" id="name" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('name') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         @error('name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Email -->
                     <div class="col-span-2 md:col-span-1">
                         <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
-                        <input wire:model="email" type="email" id="email" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                        <input wire:model="email" type="email" id="email" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('email') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
@@ -68,7 +68,7 @@
                     <!-- Address -->
                     <div class="col-span-2">
                         <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
-                        <input wire:model="address" type="text" id="address" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm" placeholder="Ingresa la dirección del cliente">
+                        <input wire:model="address" type="text" id="address" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('address') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror" placeholder="Ingresa la dirección del cliente">
                         @error('address') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>

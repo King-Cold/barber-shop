@@ -23,7 +23,7 @@
                 <!-- Client Selection -->
                 <div class="col-span-2 md:col-span-1">
                     <label for="client_id" class="block text-sm font-semibold text-gray-700 mb-2">Cliente <span class="text-red-500">*</span></label>
-                    <select wire:model="client_id" id="client_id" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <select wire:model="client_id" id="client_id" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('client_id') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         <option value="">Selecciona un cliente</option>
                         @foreach($clientsList as $client)
                             <option value="{{ $client->id }}">{{ $client->name }} ({{ $client->phone ?? 'Sin teléfono' }})</option>
@@ -35,7 +35,7 @@
                 <!-- Barber Selection -->
                 <div class="col-span-2 md:col-span-1">
                     <label for="barber_id" class="block text-sm font-semibold text-gray-700 mb-2">Barbero <span class="text-red-500">*</span></label>
-                    <select wire:model.live="barber_id" id="barber_id" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <select wire:model.live="barber_id" id="barber_id" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('barber_id') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         <option value="">Selecciona un barbero</option>
                         @foreach($barbersList as $barber)
                             <option value="{{ $barber->id }}">{{ $barber->name }} - {{ $barber->specialty ?? 'General' }}</option>
@@ -47,7 +47,7 @@
                 <!-- Service Selection -->
                 <div class="col-span-2">
                     <label for="service_id" class="block text-sm font-semibold text-gray-700 mb-2">Servicio <span class="text-red-500">*</span></label>
-                    <select wire:model="service_id" id="service_id" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <select wire:model="service_id" id="service_id" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('service_id') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         <option value="">Selecciona un servicio</option>
                         @foreach($servicesList as $service)
                             <option value="{{ $service->id }}">{{ $service->name }} - ${{ number_format($service->price, 2) }} ({{ $service->duration }} min)</option>
@@ -59,7 +59,7 @@
                 <!-- Date Selection -->
                 <div class="col-span-2 md:col-span-1">
                     <label for="date" class="block text-sm font-semibold text-gray-700 mb-2">Fecha <span class="text-red-500">*</span></label>
-                    <input wire:model.live="date" type="date" id="date" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <input wire:model.live="date" type="date" id="date" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('date') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                     @error('date') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
@@ -82,7 +82,7 @@
                             {{ $scheduleData['message'] }}
                         </div>
                     @else
-                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-3">
+                        <div class="p-4 rounded-lg mb-3 border transition-all @error('time') bg-red-50/50 border-red-300 ring-1 ring-red-500/20 @else bg-gray-50 border-gray-200 @enderror">
                             <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wider">Bloques de tiempo disponibles (30 min)</p>
                             
                             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
@@ -118,7 +118,7 @@
                 <!-- Status Selection -->
                 <div class="col-span-2">
                     <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">Estado de la Cita <span class="text-red-500">*</span></label>
-                    <select wire:model="status" id="status" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <select wire:model="status" id="status" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('status') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                         <option value="pending">Pendiente</option>
                         <option value="confirmed">Confirmada</option>
                         <option value="completed">Completada</option>

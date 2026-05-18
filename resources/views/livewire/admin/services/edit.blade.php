@@ -20,7 +20,7 @@
                 <!-- Name -->
                 <div class="col-span-2">
                     <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nombre del Servicio <span class="text-red-500">*</span></label>
-                    <input wire:model="name" type="text" id="name" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <input wire:model="name" type="text" id="name" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('name') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                     @error('name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
@@ -31,7 +31,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 text-sm">$</span>
                         </div>
-                        <input wire:model="price" type="number" step="0.01" id="price" class="block w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                        <input wire:model="price" type="number" step="0.01" id="price" class="block w-full pl-8 pr-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('price') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                     </div>
                     @error('price') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
@@ -43,7 +43,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fa-regular fa-clock text-gray-400 text-xs"></i>
                         </div>
-                        <input wire:model="duration" type="number" id="duration" class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                        <input wire:model="duration" type="number" id="duration" class="block w-full pl-10 pr-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('duration') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror">
                     </div>
                     @error('duration') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
@@ -51,7 +51,7 @@
                 <!-- Description -->
                 <div class="col-span-2">
                     <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
-                    <textarea wire:model="description" id="description" rows="5" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm"></textarea>
+                    <textarea wire:model="description" id="description" rows="5" class="block w-full px-4 py-3 border rounded-lg text-sm transition-all shadow-sm @error('description') border-red-500 focus:ring-red-500 focus:border-red-500 ring-1 ring-red-500/20 @else border-gray-300 focus:ring-bronze-gold focus:border-bronze-gold @enderror"></textarea>
                     @error('description') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
