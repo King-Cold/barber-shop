@@ -35,7 +35,7 @@
                 <!-- Barber Selection -->
                 <div class="col-span-2 md:col-span-1">
                     <label for="barber_id" class="block text-sm font-semibold text-gray-700 mb-2">Barbero <span class="text-red-500">*</span></label>
-                    <select wire:model="barber_id" id="barber_id" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <select wire:model.live="barber_id" id="barber_id" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
                         <option value="">Selecciona un barbero</option>
                         @foreach($barbersList as $barber)
                             <option value="{{ $barber->id }}">{{ $barber->name }} - {{ $barber->specialty ?? 'General' }}</option>
@@ -59,14 +59,59 @@
                 <!-- Date Selection -->
                 <div class="col-span-2 md:col-span-1">
                     <label for="date" class="block text-sm font-semibold text-gray-700 mb-2">Fecha <span class="text-red-500">*</span></label>
-                    <input wire:model="date" type="date" id="date" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                    <input wire:model.live="date" type="date" id="date" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
                     @error('date') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
-                <!-- Time Selection -->
-                <div class="col-span-2 md:col-span-1">
-                    <label for="time" class="block text-sm font-semibold text-gray-700 mb-2">Hora <span class="text-red-500">*</span></label>
-                    <input wire:model="time" type="time" id="time" class="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-bronze-gold focus:border-bronze-gold text-sm transition-all shadow-sm">
+                <!-- Time Selection (Reactive Slot Grid) -->
+                <div class="col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Hora de la Cita <span class="text-red-500">*</span></label>
+                    
+                    @php
+                        $scheduleData = $this->getAvailableSlots();
+                    @endphp
+
+                    @if(empty($scheduleData))
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-amber-500"></i>
+                            Por favor, selecciona un barbero y una fecha para ver las horas disponibles.
+                        </div>
+                    @elseif($scheduleData['status'] === 'not_working')
+                        <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-red-500"></i>
+                            {{ $scheduleData['message'] }}
+                        </div>
+                    @else
+                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg mb-3">
+                            <p class="text-xs text-gray-500 font-medium mb-3 uppercase tracking-wider">Bloques de tiempo disponibles (30 min)</p>
+                            
+                            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                                @foreach($scheduleData['slots'] as $slot)
+                                    @if($slot['is_booked'])
+                                        <button type="button" disabled class="px-3 py-2 text-xs font-semibold text-gray-400 bg-gray-200 border border-gray-300 rounded-lg cursor-not-allowed flex flex-col items-center justify-center gap-1 shadow-inner">
+                                            <span>{{ $slot['formatted'] }}</span>
+                                            <span class="text-[9px] text-red-500 uppercase tracking-widest font-bold"><i class="fa-solid fa-lock text-[8px]"></i> Ocupado</span>
+                                        </button>
+                                    @else
+                                        @php
+                                            $isSelected = ($time === $slot['time']);
+                                        @endphp
+                                        <button type="button" 
+                                            wire:click="$set('time', '{{ $slot['time'] }}')"
+                                            class="px-3 py-2 text-xs font-bold rounded-lg border transition-all flex flex-col items-center justify-center gap-1 shadow-sm {{ $isSelected ? 'bg-bronze-gold text-white border-bronze-gold ring-2 ring-bronze-gold/30' : 'bg-white text-slate-dark border-gray-300 hover:border-bronze-gold hover:text-bronze-gold hover:bg-bronze-gold/5' }}">
+                                            <span>{{ $slot['formatted'] }}</span>
+                                            @if($isSelected)
+                                                <span class="text-[9px] text-white font-bold uppercase tracking-widest"><i class="fa-solid fa-circle-check"></i> Elegido</span>
+                                            @else
+                                                <span class="text-[9px] text-gray-400 font-normal uppercase tracking-widest">Disponible</span>
+                                            @endif
+                                        </button>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                    
                     @error('time') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
 

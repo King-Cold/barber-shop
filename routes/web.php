@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('barbers/create', \App\Livewire\Admin\BarberForm::class)->name('barbers.create');
         Route::get('barbers/{barber}/edit', \App\Livewire\Admin\BarberForm::class)->name('barbers.edit');
         Route::get('barbers/{barber}/records', \App\Livewire\Admin\BarberRecords::class)->name('barbers.records');
+        Route::get('barbers/{barber}/schedule', \App\Livewire\Admin\BarberSchedule::class)->name('barbers.schedule');
 
         // Services
         Route::get('services', \App\Livewire\Admin\ServiceManager::class)->name('services');

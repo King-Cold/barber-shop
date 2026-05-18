@@ -1,6 +1,6 @@
-# Barber Shop Management System ✂️
+# Barber Shop✂️
 
-Bienvenido al **Barber Shop Management System**, una plataforma profesional diseñada para la gestión eficiente de una barbería moderna. Este sistema permite administrar citas, clientes, barberos y servicios con notificaciones automáticas y generación de tickets en PDF.
+Bienvenido al **Barber Shop**, una plataforma profesional diseñada para la gestión eficiente de una barbería moderna. Este sistema permite administrar citas, clientes, barberos y servicios con notificaciones automáticas y generación de tickets en PDF.
 
 ## 🚀 Requisitos del Sistema
 
@@ -71,4 +71,4 @@ php artisan barber:reminders
 *   **Responsive UI:** Interfaz elegante optimizada para cualquier dispositivo.
 
 ---
-Desarrollado con ❤️ usando **Laravel 11**, **Livewire 3** y **Tailwind CSS**.
+Desarrollado por **Rodrigo Alejandro Chi Catzim** usando **Laravel 11**, **Livewire 3** y **Tailwind CSS**.

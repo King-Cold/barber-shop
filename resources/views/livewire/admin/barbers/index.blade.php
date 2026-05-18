@@ -108,6 +108,9 @@
                                 <a href="{{ route('barbers.records', $barber->id) }}" class="inline-block text-vintage-gold hover:text-yellow-600 bg-vintage-gold/10 hover:bg-vintage-gold/20 p-2 rounded-md transition-colors mr-2" title="Ver Historial de Citas" wire:navigate>
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
+                                <a href="{{ route('barbers.schedule', $barber->id) }}" class="inline-block text-emerald-600 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 p-2 rounded-md transition-colors mr-2" title="Gestionar Horario de Trabajo" wire:navigate>
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </a>
                                 <a href="{{ route('barbers.edit', $barber->id) }}" class="inline-block text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-md transition-colors mr-2">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>

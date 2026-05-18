@@ -59,6 +59,10 @@ class AppointmentForm extends Component
     {
         $this->validate();
 
+        if (!$this->validateSelectedTime()) {
+            return;
+        }
+
         $timeString = Carbon::parse($this->time)->format('H:i:s');
 
         // Check for overlapping appointments
@@ -123,6 +127,132 @@ class AppointmentForm extends Component
         }
 
         return redirect()->route('appointments');
+    }
+
+    public function validateSelectedTime()
+    {
+        if (!$this->barber_id || !$this->date || !$this->time) {
+            return true;
+        }
+
+        $barber = Barber::find($this->barber_id);
+        if (!$barber) {
+            return false;
+        }
+
+        $carbonDate = Carbon::parse($this->date);
+        $dayOfWeek = $carbonDate->dayOfWeekIso;
+
+        $schedule = $barber->schedules()->where('day_of_week', $dayOfWeek)->first();
+        if (!$schedule || !$schedule->is_working) {
+            $this->addError('time', 'El barbero no trabaja este día de la semana.');
+            return false;
+        }
+
+        $selectedTime = Carbon::parse($this->time)->format('H:i');
+        $start = Carbon::parse($schedule->start_time)->format('H:i');
+        $end = Carbon::parse($schedule->end_time)->format('H:i');
+
+        if ($selectedTime < $start || $selectedTime >= $end) {
+            $this->addError('time', "El horario seleccionado ({$this->time}) está fuera de la jornada laboral del barbero ({$start} - {$end}).");
+            return false;
+        }
+
+        if ($schedule->lunch_start_time && $schedule->lunch_end_time) {
+            $lunchStart = Carbon::parse($schedule->lunch_start_time)->format('H:i');
+            $lunchEnd = Carbon::parse($schedule->lunch_end_time)->format('H:i');
+            if ($selectedTime >= $lunchStart && $selectedTime < $lunchEnd) {
+                $this->addError('time', 'El horario seleccionado coincide con el receso de almuerzo del barbero.');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getAvailableSlots()
+    {
+        if (!$this->barber_id || !$this->date) {
+            return [];
+        }
+
+        $barber = Barber::find($this->barber_id);
+        if (!$barber) {
+            return [];
+        }
+
+        $carbonDate = Carbon::parse($this->date);
+        $dayOfWeek = $carbonDate->dayOfWeekIso;
+
+        $schedule = $barber->schedules()->where('day_of_week', $dayOfWeek)->first();
+
+        if (!$schedule || !$schedule->is_working) {
+            return [
+                'status' => 'not_working',
+                'message' => 'El barbero seleccionado no trabaja este día de la semana (' . $this->getDayName($dayOfWeek) . ').',
+                'slots' => []
+            ];
+        }
+
+        $start = Carbon::parse($schedule->start_time);
+        $end = Carbon::parse($schedule->end_time);
+
+        $slots = [];
+        $current = $start->copy();
+
+        $bookedTimes = Appointment::where('barber_id', $this->barber_id)
+            ->where('date', $this->date)
+            ->where('status', '!=', 'canceled');
+
+        if ($this->isEditing) {
+            $bookedTimes->where('id', '!=', $this->appointment->id);
+        }
+
+        $bookedTimes = $bookedTimes->pluck('time')
+            ->map(fn($t) => Carbon::parse($t)->format('H:i'))
+            ->toArray();
+
+        while ($current->lt($end)) {
+            $timeSlot = $current->format('H:i');
+
+            $isLunch = false;
+            if ($schedule->lunch_start_time && $schedule->lunch_end_time) {
+                $lunchStart = Carbon::parse($schedule->lunch_start_time);
+                $lunchEnd = Carbon::parse($schedule->lunch_end_time);
+                if ($current->gte($lunchStart) && $current->lt($lunchEnd)) {
+                    $isLunch = true;
+                }
+            }
+
+            if (!$isLunch) {
+                $isBooked = in_array($timeSlot, $bookedTimes);
+                $slots[] = [
+                    'time' => $timeSlot,
+                    'formatted' => $current->format('g:i A'),
+                    'is_booked' => $isBooked,
+                ];
+            }
+            $current->addMinutes(30);
+        }
+
+        return [
+            'status' => 'working',
+            'slots' => $slots
+        ];
+    }
+
+    private function getDayName($dayNum)
+    {
+        $days = [
+            1 => 'Lunes',
+            2 => 'Martes',
+            3 => 'Miércoles',
+            4 => 'Jueves',
+            5 => 'Viernes',
+            6 => 'Sábado',
+            7 => 'Domingo',
+        ];
+        return $days[$dayNum] ?? '';
     }
 
     public function render()
