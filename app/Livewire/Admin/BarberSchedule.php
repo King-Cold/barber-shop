@@ -123,7 +123,7 @@ class BarberSchedule extends Component
             'showConfirmButton' => false
         ]);
 
-        return redirect()->route('barbers');
+        return redirect()->route('barbers.index');
     }
 
     public function render()

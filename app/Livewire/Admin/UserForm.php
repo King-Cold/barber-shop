@@ -130,13 +130,22 @@ class UserForm extends Component
                         'photo' => $user->photo,
                     ]);
                 } else {
-                    \App\Models\Barber::create([
+                    $barber = \App\Models\Barber::create([
                         'user_id' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
                         'specialty' => 'General',
                         'photo' => $user->photo,
                     ]);
+                }
+
+                if (!$this->isEditing) {
+                    session()->flash('swal', [
+                        'title' => 'Barbero Creado',
+                        'text' => 'El perfil se enlazó automáticamente. Completa su información aquí.',
+                        'icon' => 'success',
+                    ]);
+                    return redirect()->route('admin.barbers.edit', $barber->id);
                 }
             } elseif ($user->role_id == 4) {
                 // Unlink this user from any existing Barber record
@@ -155,12 +164,21 @@ class UserForm extends Component
                         'photo' => $user->photo,
                     ]);
                 } else {
-                    \App\Models\Client::create([
+                    $client = \App\Models\Client::create([
                         'user_id' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
                         'photo' => $user->photo,
                     ]);
+                }
+
+                if (!$this->isEditing) {
+                    session()->flash('swal', [
+                        'title' => 'Cliente Creado',
+                        'text' => 'El perfil se enlazó automáticamente. Completa su información aquí.',
+                        'icon' => 'success',
+                    ]);
+                    return redirect()->route('admin.clients.edit', $client->id);
                 }
             } else {
                 // Unlink this user from both Barbers and Clients
@@ -169,7 +187,7 @@ class UserForm extends Component
             }
         }
 
-        return redirect()->route('users');
+        return redirect()->route('admin.users.index');
     }
 
     public function render()

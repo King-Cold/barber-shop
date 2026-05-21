@@ -82,6 +82,9 @@ class BarberManager extends Component
 
     public function delete($id)
     {
+        if (is_array($id)) {
+            $id = $id['id'] ?? null;
+        }
         $barber = Barber::find($id);
         if ($barber) {
             $barberName = $barber->name;

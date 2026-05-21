@@ -3,14 +3,14 @@
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <x-breadcrumbs :links="[
-                ['label' => 'Barberos', 'url' => route('barbers')],
+                ['label' => 'Barberos', 'url' => route('admin.barbers.index')],
                 ['label' => 'Horario de Trabajo']
             ]" />
             <h1 class="text-2xl font-bold text-slate-dark mt-1">Horario de Trabajo</h1>
             <p class="text-gray-500 text-sm">Define los días de la semana y las horas en que labora este profesional.</p>
         </div>
         <div>
-            <a href="{{ route('barbers') }}" class="inline-flex items-center bg-barber-black hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-4 py-2.5 shadow-sm transition-colors font-sans" wire:navigate>
+            <a href="{{ route('admin.barbers.index') }}" class="inline-flex items-center bg-barber-black hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-4 py-2.5 shadow-sm transition-colors font-sans" wire:navigate>
                 <i class="fa-solid fa-arrow-left mr-2 text-vintage-gold"></i> Volver a Barberos
             </a>
         </div>
@@ -166,7 +166,7 @@
 
         <!-- Action Buttons -->
         <div class="flex items-center justify-end gap-4 border-t border-gray-150 pt-6">
-            <a href="{{ route('barbers') }}" class="px-8 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-55 transition-all shadow-sm" wire:navigate>
+            <a href="{{ route('admin.barbers.index') }}" class="px-8 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-55 transition-all shadow-sm" wire:navigate>
                 Cancelar
             </a>
             <button type="submit" class="px-10 py-3 text-sm font-bold text-white bg-vintage-gold hover:bg-yellow-600 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center">

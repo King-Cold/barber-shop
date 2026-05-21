@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        Panel de Administración
+         <i class="fa-solid fa-chart-line mr-2 text-vintage-gold"></i> DASHBOARD
     </x-slot>
 
     <div class="pt-4">

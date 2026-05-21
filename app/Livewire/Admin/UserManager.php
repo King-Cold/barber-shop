@@ -8,16 +8,25 @@ use App\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 
+/**
+ * Componente Livewire: UserManager
+ * 
+ * Este componente administra la tabla de usuarios del sistema (Admins y SuperAdmins).
+ * Incluye lógica vital de seguridad para evitar que los usuarios eliminen
+ * su propia cuenta o la del administrador principal.
+ */
 #[Layout('layouts.app')]
 class UserManager extends Component
 {
     use WithPagination;
 
+    // Variables de la tabla (Buscador, resultados por página, ordenamiento)
     public $search = '';
     public $perPage = 10;
     public $sortField = 'id';
     public $sortDirection = 'desc';
 
+    // Escucha el evento de confirmación de SweetAlert
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
     public function updatingSearch()
@@ -40,21 +49,27 @@ class UserManager extends Component
         }
     }
 
+    // Redirige al formulario de creación
     public function create()
     {
-        return redirect()->route('users.create');
+        return redirect()->route('admin.users.create');
     }
 
+    // Redirige al formulario de edición del usuario seleccionado
     public function edit($id)
     {
-        return redirect()->route('users.edit', $id);
+        return redirect()->route('admin.users.edit', $id);
     }
 
+    /**
+     * Valida si se puede eliminar a un usuario ANTES de mostrar la alerta.
+     * Aquí se aplican reglas de negocio críticas de seguridad.
+     */
     public function confirmDelete($id)
     {
         $user = User::find($id);
         
-        // Security Check: Cannot delete self
+        // REGLA 1: No puedes eliminar tu propia cuenta mientras estás logueado.
         if ($user && $user->id === auth()->id()) {
             $this->dispatch('swal', [
                 'title' => 'Acción denegada',
@@ -65,7 +80,18 @@ class UserManager extends Component
             return;
         }
 
-        // Security Check: Only SuperAdmin can delete other SuperAdmins (or prevent it entirely)
+        // REGLA 2: No se puede eliminar al primer usuario creado (Generalmente el dueño o creador).
+        if ($user && $user->id === 1) {
+            $this->dispatch('swal', [
+                'title' => 'Acción denegada',
+                'text' => 'La cuenta del Super Administrador Principal (ID 1) está protegida y no puede ser eliminada.',
+                'icon' => 'error',
+                'showConfirmButton' => true
+            ]);
+            return;
+        }
+
+        // REGLA 3: Un Administrador normal no puede eliminar a un Super Administrador.
         if ($user && $user->isSuperAdmin() && !auth()->user()->isSuperAdmin()) {
             $this->dispatch('swal', [
                 'title' => 'Acceso Denegado',
@@ -76,6 +102,7 @@ class UserManager extends Component
             return;
         }
 
+        // Si pasa todas las pruebas, muestra la alerta preguntando si está seguro.
         $this->dispatch('swal:confirm', [
             'title' => '¿Estás seguro?',
             'text' => "Estás a punto de eliminar a {$user->name}. ¡No podrás revertir esto!",
@@ -84,14 +111,24 @@ class UserManager extends Component
         ]);
     }
 
+    /**
+     * Método final que elimina al usuario.
+     */
     public function delete($id)
     {
+        if (is_array($id)) {
+            $id = $id['id'] ?? null;
+        }
         $user = User::find($id);
         if ($user) {
             $userName = $user->name;
             
-            // Final security check
+            // Verificación doble de seguridad justo antes de borrar (backend).
             if ($user->id === auth()->id()) {
+                return;
+            }
+
+            if ($user->id === 1) {
                 return;
             }
             
@@ -106,6 +143,9 @@ class UserManager extends Component
         }
     }
 
+    /**
+     * Renderiza la tabla de usuarios buscando por nombre o correo.
+     */
     public function render()
     {
         $users = User::with('role')

@@ -82,6 +82,9 @@ class ClientManager extends Component
 
     public function delete($id)
     {
+        if (is_array($id)) {
+            $id = $id['id'] ?? null;
+        }
         $client = Client::find($id);
         if ($client) {
             $clientName = $client->name;

@@ -12,6 +12,11 @@ class Client extends Model
 
     protected $fillable = ['user_id', 'name', 'phone', 'email', 'address', 'photo'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class);

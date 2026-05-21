@@ -1,6 +1,6 @@
 <div class="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <x-breadcrumbs :links="[
-        ['label' => 'Servicios', 'url' => route('services')],
+        ['label' => 'Servicios', 'url' => route('admin.services.index')],
         ['label' => 'Editar Servicio']
     ]" />
 
@@ -10,7 +10,7 @@
                 <i class="fa-solid fa-bell-concierge mr-2 text-bronze-gold"></i>
                 Editar Configuración de Servicio
             </h2>
-            <a href="{{ route('services') }}" class="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors">
+            <a href="{{ route('admin.services.index') }}" class="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors">
                 <i class="fa-solid fa-arrow-left mr-1"></i> Cancelar
             </a>
         </div>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="mt-12 flex items-center justify-end space-x-4 border-t border-gray-100 pt-8">
-                <a href="{{ route('services') }}" class="px-8 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
+                <a href="{{ route('admin.services.index') }}" class="px-8 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
                     Cancelar
                 </a>
                 <button type="submit" class="px-10 py-3 text-sm font-bold text-white bg-slate-dark hover:bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center">

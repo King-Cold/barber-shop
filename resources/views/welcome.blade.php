@@ -12,6 +12,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@400;600;700&family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('images/logo-navegador.png') }}">
+
         <!-- Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -29,7 +32,7 @@
             <!-- Header -->
             <header class="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center z-20">
                 <div class="flex items-center space-x-3">
-                    <img src="{{ asset('images/logo.jpeg') }}" class="w-12 h-12 rounded-full object-cover border border-vintage-gold/40 shadow-lg" alt="Logo">
+                    <img src="{{ asset('images/logo-barber.png') }}" class="w-12  rounded-full object-cover  shadow-lg" alt="Logo">
                     <span class="text-xl font-bold tracking-widest font-barber uppercase text-white">
                         Barber <span class="text-vintage-gold">Shop</span>
                     </span>
@@ -103,7 +106,7 @@
                         
                         <!-- Overlay smaller logo/badge -->
                         <div class="absolute -bottom-6 -right-6 p-2 bg-barber-black border border-vintage-gold/30 rounded-xl shadow-2xl max-w-[150px]">
-                            <img src="{{ asset('images/logo.jpeg') }}" class="w-full h-auto rounded-lg" alt="Estilo Vintage">
+                            <img src="{{ asset('images/logo-barber.png') }}" class="w-full h-auto rounded-lg" alt="Estilo Vintage">
                         </div>
                     </div>
                 </div>
@@ -206,7 +209,7 @@
                             @if($barber->photo && file_exists(public_path($barber->photo)))
                                 <img src="{{ asset($barber->photo) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="{{ $barber->name }}">
                             @else
-                                <img src="{{ asset('images/logo.jpeg') }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="{{ $barber->name }}">
+                                <img src="{{ asset('images/logo-barber.png') }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="{{ $barber->name }}">
                             @endif
                             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                                 <div class="text-xs text-vintage-gold">
@@ -241,7 +244,7 @@
                 <!-- Branding -->
                 <div class="space-y-4 text-center md:text-left">
                     <div class="flex items-center justify-center md:justify-start space-x-3">
-                        <img src="{{ asset('images/logo.jpeg') }}" class="w-12 h-12 rounded-full object-cover border border-vintage-gold/30 shadow-lg" alt="Logo">
+                        <img src="{{ asset('images/logo-barber.png') }}" class="w-12 h-12 rounded-full object-cover border border-vintage-gold/30 shadow-lg" alt="Logo">
                         <span class="text-xl font-bold tracking-widest font-barber uppercase text-white">
                             Barber <span class="text-vintage-gold">Shop</span>
                         </span>

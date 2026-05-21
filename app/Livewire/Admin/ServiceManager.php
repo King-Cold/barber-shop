@@ -61,6 +61,9 @@ class ServiceManager extends Component
 
     public function delete($id)
     {
+        if (is_array($id)) {
+            $id = $id['id'] ?? null;
+        }
         $service = Service::find($id);
         if ($service) {
             $serviceName = $service->name;

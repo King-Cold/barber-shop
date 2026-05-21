@@ -27,7 +27,7 @@
                 </div>
                 <input wire:model.live.debounce.300ms="search" type="text" class="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-bronze-gold focus:border-bronze-gold block w-full pl-10 p-2.5 shadow-sm" placeholder="Buscar por nombre de servicio...">
             </div>
-            <a href="{{ route('services.create') }}" class="w-full md:w-auto bg-slate-dark hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center transition-colors shadow-sm whitespace-nowrap">
+            <a href="{{ route('admin.services.create') }}" class="w-full md:w-auto bg-slate-dark hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center transition-colors shadow-sm whitespace-nowrap">
                 <i class="fa-solid fa-plus mr-2"></i> Nuevo Servicio
             </a>
         </div>
@@ -40,20 +40,24 @@
                 <thead>
                     <tr class="bg-gray-50/50 border-b border-gray-100">
                         <th wire:click="sortBy('id')" class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
-                            ID
-                            @if($sortField === 'id')
-                                <i class="fa-solid fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                            @else
-                                <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
-                            @endif
+                            <div class="flex items-center">
+                                ID
+                                @if($sortField === 'id')
+                                    <i class="fa-solid fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1.5"></i>
+                                @else
+                                    <i class="fa-solid fa-sort ml-1.5 text-gray-300"></i>
+                                @endif
+                            </div>
                         </th>
                         <th wire:click="sortBy('name')" class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
-                            Servicio
-                            @if($sortField === 'name')
-                                <i class="fa-solid fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                            @else
-                                <i class="fa-solid fa-sort ml-1 text-gray-300"></i>
-                            @endif
+                            <div class="flex items-center">
+                                Servicio
+                                @if($sortField === 'name')
+                                    <i class="fa-solid fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1.5"></i>
+                                @else
+                                    <i class="fa-solid fa-sort ml-1.5 text-gray-300"></i>
+                                @endif
+                            </div>
                         </th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Precio
@@ -81,10 +85,10 @@
                                 <div class="text-sm text-gray-600"><i class="fa-regular fa-clock mr-1 opacity-50"></i> {{ $service->duration }} min</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('services.edit', $service->id) }}" class="inline-block text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-md transition-colors mr-2">
+                                <a href="{{ route('admin.services.edit', $service->id) }}" class="inline-flex items-center justify-center text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-md transition-colors mr-2">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <button wire:click="confirmDelete({{ $service->id }})" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors">
+                                <button wire:click="confirmDelete({{ $service->id }})" class="inline-flex items-center justify-center text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-md transition-colors">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </td>

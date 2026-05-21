@@ -3,9 +3,26 @@
 
 Tu cita en **{{ config('app.name', 'Barber Shop') }}** ha sido reservada. Para garantizar tu lugar, por favor **confirma tu asistencia** haciendo clic en el botón de abajo.
 
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td align="center">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td style="padding-right: 10px;">
 <x-mail::button :url="URL::signedRoute('appointments.client-confirm', ['appointment' => $appointment->id])" color="success">
-Confirmar mi Cita ahora
+Confirmar mi Cita
 </x-mail::button>
+</td>
+<td>
+<x-mail::button :url="URL::signedRoute('appointments.client-cancel', ['appointment' => $appointment->id])" color="error">
+Cancelar Cita
+</x-mail::button>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
 
 <x-mail::panel>
 ## Resumen de tu Reserva

@@ -3,14 +3,14 @@
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <x-breadcrumbs :links="[
-                ['label' => 'Clientes', 'url' => route('clients')],
+                ['label' => 'Clientes', 'url' => route('admin.clients.index')],
                 ['label' => 'Historial de Citas']
             ]" />
             <h1 class="text-2xl font-bold text-slate-dark mt-1">Historial de Citas</h1>
             <p class="text-gray-500 text-sm">Consulta todos los registros y servicios agendados por este cliente.</p>
         </div>
         <div>
-            <a href="{{ route('clients') }}" class="inline-flex items-center bg-barber-black hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-4 py-2.5 shadow-sm transition-colors font-sans" wire:navigate>
+            <a href="{{ route('admin.clients.index') }}" class="inline-flex items-center bg-barber-black hover:bg-slate-800 text-white font-medium rounded-lg text-sm px-4 py-2.5 shadow-sm transition-colors font-sans" wire:navigate>
                 <i class="fa-solid fa-arrow-left mr-2 text-vintage-gold"></i> Volver a Clientes
             </a>
         </div>

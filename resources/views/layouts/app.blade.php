@@ -13,6 +13,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('images/logo-navegador.png') }}">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -33,23 +36,23 @@
                     <!-- Page Header Title -->
                     <div class="hidden lg:block">
                         <h2 class="text-lg font-bold text-white tracking-widest font-barber uppercase">
-                            @if(request()->routeIs('dashboard'))
-                                <i class="fa-solid fa-chart-line mr-2 text-vintage-gold"></i> Dashboard
-                            @elseif(request()->routeIs('appointments*'))
-                                <i class="fa-regular fa-calendar-days mr-2 text-vintage-gold"></i> Citas
-                            @elseif(request()->routeIs('clients*'))
-                                <i class="fa-solid fa-users mr-2 text-vintage-gold"></i> Clientes
-                            @elseif(request()->routeIs('barbers*'))
-                                <i class="fa-solid fa-scissors mr-2 text-vintage-gold"></i> Barberos
-                            @elseif(request()->routeIs('services*'))
-                                <i class="fa-solid fa-spray-can mr-2 text-vintage-gold"></i> Servicios
-                            @elseif(request()->routeIs('users*'))
-                                <i class="fa-solid fa-user-shield mr-2 text-vintage-gold"></i> Usuarios
-                            @elseif(request()->routeIs('profile'))
-                                <i class="fa-solid fa-user-gear mr-2 text-vintage-gold"></i> Mi Perfil
-                            @else
-                                {{ $header ?? '' }}
-                            @endif
+                            @if(request()->routeIs('admin.dashboard'))
+    <i class="fa-solid fa-chart-line mr-2 text-vintage-gold"></i> Dashboard
+@elseif(request()->routeIs('admin.appointments*'))
+    <i class="fa-regular fa-calendar-days mr-2 text-vintage-gold"></i> Citas
+@elseif(request()->routeIs('admin.clients*'))
+    <i class="fa-solid fa-users mr-2 text-vintage-gold"></i> Clientes
+@elseif(request()->routeIs('admin.barbers*'))
+    <i class="fa-solid fa-scissors mr-2 text-vintage-gold"></i> Barberos
+@elseif(request()->routeIs('admin.services*'))
+    <i class="fa-solid fa-spray-can mr-2 text-vintage-gold"></i> Servicios
+@elseif(request()->routeIs('admin.users*'))
+    <i class="fa-solid fa-user-shield mr-2 text-vintage-gold"></i> Usuarios
+@elseif(request()->routeIs('profile'))
+    <i class="fa-solid fa-user-gear mr-2 text-vintage-gold"></i> Mi Perfil
+@else
+    {{ $header ?? '' }}
+@endif
                         </h2>
                     </div>
 

@@ -12,6 +12,7 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
+        // Servicios básicos (duración <= 30 minutos)
         Service::updateOrCreate(
             ['name' => 'Corte Clásico'],
             [
@@ -21,10 +22,10 @@ class ServiceSeeder extends Seeder
         );
 
         Service::updateOrCreate(
-            ['name' => 'Corte Moderno / Fade'],
+            ['name' => 'Corte Moderno'],
             [
                 'price' => 200.00,
-                'duration' => 45,
+                'duration' => 30,
             ]
         );
 
@@ -40,15 +41,48 @@ class ServiceSeeder extends Seeder
             ['name' => 'Afeitado Tradicional'],
             [
                 'price' => 180.00,
-                'duration' => 40,
+                'duration' => 30,
+            ]
+        );
+
+        // Nuevos servicios (todos <= 30 minutos)
+        Service::updateOrCreate(
+            ['name' => 'Lavado de Cabello'],
+            [
+                'price' => 80.00,
+                'duration' => 20,
             ]
         );
 
         Service::updateOrCreate(
-            ['name' => 'Combo Corte + Barba'],
+            ['name' => 'Tinte Rapido'],
             [
-                'price' => 250.00,
-                'duration' => 60,
+                'price' => 120.00,
+                'duration' => 30,
+            ]
+        );
+
+        Service::updateOrCreate(
+            ['name' => 'Peinado Express'],
+            [
+                'price' => 90.00,
+                'duration' => 25,
+            ]
+        );
+
+        Service::updateOrCreate(
+            ['name' => 'Desvanecimiento con Line Up'],
+            [
+                'price' => 130.00,
+                'duration' => 30,
+            ]
+        );
+
+        Service::updateOrCreate(
+            ['name' => 'Recorte de Barba'],
+            [
+                'price' => 70.00,
+                'duration' => 15,
             ]
         );
     }

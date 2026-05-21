@@ -1,118 +1,138 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Comprobante de Cita</title>
+    <meta charset="utf-8">
+    <title>Comprobante de Cita - Barber Shop</title>
     <style>
         body {
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            color: #333;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #1e293b;
             margin: 0;
             padding: 0;
-            background-color: #fff;
-            line-height: 1.5;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
         }
-        .container {
-            width: 100%;
-            max-width: 500px;
-            margin: 20px auto;
-            border: 1px solid #e5e7eb;
-            padding: 40px;
+        .ticket-container {
+            width: 380px;
+            margin: 0 auto;
+            border: 2px dashed #d4af37;
+            padding: 25px;
+            background-color: #fafafa;
+            border-radius: 8px;
         }
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #8B7355;
-            padding-bottom: 20px;
-        }
-        .logo {
-            width: 120px;
-            height: auto;
-            margin-bottom: 15px;
-        }
-        .title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1F232D;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 0;
-        }
-        .subtitle {
-            font-size: 11px;
-            color: #8B7355;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-top: 5px;
-        }
-        .info-grid {
-            width: 100%;
-            margin-bottom: 30px;
-        }
-        .info-item {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
             margin-bottom: 20px;
         }
-        .info-label {
-            font-size: 9px;
-            color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 4px;
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .logo-text {
+            font-family: 'Georgia', serif;
+            font-size: 26px;
             font-weight: bold;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .logo-subtext {
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 5px;
+        }
+        .ticket-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            display: inline-block;
+            background-color: #111827;
+            padding: 5px 15px;
+            color: #ffffff;
+            border-radius: 3px;
+        }
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 3px;
+        }
+        .info-row {
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+        .info-label {
+            color: #64748b;
+            display: inline-block;
+            width: 90px;
         }
         .info-value {
-            font-size: 15px;
-            color: #1f2937;
-            font-weight: 500;
+            color: #0f172a;
+            font-weight: bold;
         }
-        .divider {
-            height: 1px;
-            background-color: #f3f4f6;
+        .time-highlight {
+            background-color: #f1f5f9;
+            border-left: 4px solid #d4af37;
+            padding: 10px 15px;
             margin: 15px 0;
+            border-radius: 4px;
+        }
+        .time-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 1px;
+        }
+        .time-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111827;
+            margin-top: 3px;
         }
         .footer {
-            margin-top: 50px;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 15px;
             text-align: center;
             font-size: 10px;
-            color: #9ca3af;
-            border-top: 1px solid #f3f4f6;
-            padding-top: 20px;
+            color: #94a3b8;
+            margin-top: 25px;
+            line-height: 1.4;
         }
-        .price-section {
-            background-color: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            text-align: right;
-        }
-        .price-label {
-            font-size: 12px;
-            color: #4b5563;
-        }
-        .price-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #8B7355;
-        }
-        .qr-mock {
-            width: 60px;
-            height: 60px;
-            border: 1px solid #eee;
-            margin: 20px auto 10px;
-        }
-        table {
-            width: 100%;
-        }
-        td {
-            vertical-align: top;
+        .barcode-placeholder {
+            margin: 15px auto 5px auto;
+            width: 180px;
+            height: 35px;
+            border-left: 2px solid #111827;
+            border-right: 2px solid #111827;
+            background: repeating-linear-gradient(
+                90deg,
+                #111827,
+                #111827 2px,
+                transparent 2px,
+                transparent 5px
+            );
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="ticket-container">
         <div class="header">
             @php
-                $logoPath = public_path('images/logo.jpeg');
+                $logoPath = public_path('images/logo-barber.png');
                 $logoBase64 = '';
                 if (file_exists($logoPath)) {
                     $type = pathinfo($logoPath, PATHINFO_EXTENSION);
@@ -120,54 +140,68 @@
                     $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
                 }
             @endphp
-            
+
             @if($logoBase64)
                 <img src="{{ $logoBase64 }}" class="logo">
             @endif
-            
-            <h1 class="title">Barber <span style="color: #8B7355;">Shop</span></h1>
-            <div class="subtitle">Comprobante de Reservación</div>
+
+            <div class="logo-text">Barber <span style="color: #d4af37;">Shop</span></div>
+            <div class="logo-subtext">Cita Confirmada</div>
+            <div class="ticket-title">Voucher de Cita</div>
         </div>
 
-        <table class="info-grid">
-            <tr>
-                <td colspan="2" class="info-item">
-                    <div class="info-label">Cliente</div>
-                    <div class="info-value">{{ $appointment->client->name }}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="info-item" width="50%">
-                    <div class="info-label">Fecha</div>
-                    <div class="info-value">{{ \Carbon\Carbon::parse($appointment->date)->format('d M, Y') }}</div>
-                </td>
-                <td class="info-item" width="50%">
-                    <div class="info-label">Hora</div>
-                    <div class="info-value">{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="info-item">
-                    <div class="info-label">Servicio</div>
-                    <div class="info-value">{{ $appointment->service->name }}</div>
-                </td>
-                <td class="info-item">
-                    <div class="info-label">Barbero</div>
-                    <div class="info-value">{{ $appointment->barber->name }}</div>
-                </td>
-            </tr>
-        </table>
+        <div class="time-highlight">
+            <div class="time-label">Fecha y Hora de la Cita:</div>
+            <div class="time-value">
+                {{ \Carbon\Carbon::parse($appointment->date)->locale('es')->isoFormat('dddd D [de] MMMM') }}<br>
+                <span style="color: #d4af37;">{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</span>
+            </div>
+        </div>
 
-        <div class="price-section">
-            <div class="price-label">Monto Total</div>
-            <div class="price-value">${{ number_format($appointment->service->price, 2) }}</div>
+        <div>
+            <div class="section-title">Detalles del Cliente</div>
+            <div class="info-row">
+                <span class="info-label">Cliente:</span>
+                <span class="info-value">{{ $appointment->client->name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Teléfono:</span>
+                <span class="info-value">{{ $appointment->client->phone ?? 'Sin teléfono' }}</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <div class="section-title">Detalles del Servicio</div>
+            <div class="info-row">
+                <span class="info-label">Servicio:</span>
+                <span class="info-value">{{ $appointment->service->name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Barbero:</span>
+                <span class="info-value">{{ $appointment->barber->name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Duración:</span>
+                <span class="info-value">{{ $appointment->service->duration }} min</span>
+            </div>
+            <div class="info-row" style="margin-top: 8px; border-top: 1px solid #e2e8f0; padding-top: 8px;">
+                <span class="info-label" style="font-size: 14px; color: #111827;">Precio Total:</span>
+                <span class="info-value" style="font-size: 16px; color: #166534;">${{ number_format($appointment->service->price, 2) }}</span>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <div class="barcode-placeholder"></div>
+            <span style="font-size: 9px; color: #94a3b8; font-family: monospace; letter-spacing: 2px;">#APP-{{ str_pad($appointment->id, 6, '0', STR_PAD_LEFT) }}</span>
         </div>
 
         <div class="footer">
-            <p>ID de Cita: #{{ str_pad($appointment->id, 6, '0', STR_PAD_LEFT) }}</p>
-            <p>Gracias por elegirnos. Si necesita cancelar, por favor hágalo con 24h de anticipación.</p>
-            <p style="margin-top: 10px; font-weight: bold; color: #1F232D;">{{ config('app.name') }}</p>
+            <strong>¡Te esperamos!</strong><br>
+            Por favor, llega 10 minutos antes de tu cita.<br>
+            Si necesitas cancelar, avísanos con 2 horas de anticipación.<br>
+            <span style="font-size: 8px; margin-top: 5px; display: block;">&copy; {{ date('Y') }} Barber Shop. Todos los derechos reservados.</span>
         </div>
     </div>
+
 </body>
 </html>

@@ -12,13 +12,21 @@ use App\Mail\AppointmentConfirmed;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 
+/**
+ * Componente Livewire: AppointmentForm
+ * 
+ * Este componente maneja toda la lógica del formulario de citas, tanto para 
+ * CREAR una nueva cita como para EDITAR una existente. Incluye validaciones 
+ * de disponibilidad, choques de horarios, días laborales y recesos.
+ */
 #[Layout('layouts.app')]
 class AppointmentForm extends Component
 {
+    // Variables principales del componente
     public $appointment;
-    public $isEditing = false;
+    public $isEditing = false; // Bandera para saber si estamos creando o editando
 
-    // Fields
+    // Campos del formulario (bindeados con wire:model en la vista)
     public $client_id;
     public $barber_id;
     public $service_id;
@@ -26,8 +34,13 @@ class AppointmentForm extends Component
     public $time;
     public $status = 'pending';
 
+    /**
+     * Método Mount: Se ejecuta una sola vez cuando el componente se carga.
+     * Sirve para inicializar las variables.
+     */
     public function mount(Appointment $appointment = null)
     {
+        // Si recibimos una cita existente, significa que estamos EDITANDO
         if ($appointment && $appointment->exists) {
             $this->appointment = $appointment;
             $this->isEditing = true;
@@ -38,11 +51,16 @@ class AppointmentForm extends Component
             $this->time = Carbon::parse($appointment->time)->format('H:i');
             $this->status = $appointment->status;
         } else {
+            // Si no recibimos cita, estamos CREANDO. Ponemos valores por defecto.
             $this->date = Carbon::today()->format('Y-m-d');
+            // Sugiere una hora por defecto (la siguiente hora en punto)
             $this->time = Carbon::now()->addHour()->startOfHour()->format('H:i');
         }
     }
 
+    /**
+     * Reglas de validación base requeridas para guardar el formulario.
+     */
     protected function rules()
     {
         return [
@@ -55,22 +73,28 @@ class AppointmentForm extends Component
         ];
     }
 
+    /**
+     * Método principal que guarda la cita en la base de datos al presionar "Guardar".
+     */
     public function save()
     {
+        // 1. Valida los campos básicos contra las reglas en rules()
         $this->validate();
 
+        // 2. Valida la lógica de negocio (si el barbero trabaja, no es hora de comida, etc.)
         if (!$this->validateSelectedTime()) {
-            return;
+            return; // Si no pasa la validación, detiene el guardado
         }
 
         $timeString = Carbon::parse($this->time)->format('H:i:s');
 
-        // Check for overlapping appointments
+        // 3. Verifica si el barbero ya tiene una cita ocupando ese mismo horario exacto
         $conflictQuery = Appointment::where('barber_id', $this->barber_id)
             ->where('date', $this->date)
             ->where('time', $timeString)
             ->where('status', '!=', 'canceled');
 
+        // Si estamos editando, excluimos la cita actual de la validación de choques
         if ($this->isEditing) {
             $conflictQuery->where('id', '!=', $this->appointment->id);
         }
@@ -85,7 +109,9 @@ class AppointmentForm extends Component
             return;
         }
 
+        // 4. Si todo está correcto, guardamos la información
         if ($this->isEditing) {
+            // Modo Edición: Actualiza el registro existente
             $this->appointment->update([
                 'client_id' => $this->client_id,
                 'barber_id' => $this->barber_id,
@@ -101,6 +127,7 @@ class AppointmentForm extends Component
                 'icon' => 'success',
             ]);
         } else {
+            // Modo Creación: Crea un registro nuevo
             $newAppointment = Appointment::create([
                 'client_id' => $this->client_id,
                 'barber_id' => $this->barber_id,
@@ -110,7 +137,7 @@ class AppointmentForm extends Component
                 'status' => $this->status,
             ]);
 
-            // Send confirmation email
+            // 5. Intenta enviar el correo de confirmación al cliente
             try {
                 if ($newAppointment->client && $newAppointment->client->email) {
                     Mail::to($newAppointment->client->email)->send(new AppointmentConfirmed($newAppointment));
@@ -126,11 +153,16 @@ class AppointmentForm extends Component
             ]);
         }
 
-        return redirect()->route('appointments');
+        // 6. Redirige a la tabla principal
+        return redirect()->route('appointments.index');
     }
 
+    /**
+     * Valida que el horario elegido coincida con el horario de trabajo del barbero.
+     */
     public function validateSelectedTime()
     {
+        // Si falta algún dato vital, no podemos validar
         if (!$this->barber_id || !$this->date || !$this->time) {
             return true;
         }
@@ -140,9 +172,11 @@ class AppointmentForm extends Component
             return false;
         }
 
+        // Determina qué día de la semana es la fecha seleccionada (1 = Lunes, 7 = Domingo)
         $carbonDate = Carbon::parse($this->date);
         $dayOfWeek = $carbonDate->dayOfWeekIso;
 
+        // Busca el horario del barbero para ese día específico
         $schedule = $barber->schedules()->where('day_of_week', $dayOfWeek)->first();
         if (!$schedule || !$schedule->is_working) {
             $this->addError('time', 'El barbero no trabaja este día de la semana.');
@@ -153,11 +187,13 @@ class AppointmentForm extends Component
         $start = Carbon::parse($schedule->start_time)->format('H:i');
         $end = Carbon::parse($schedule->end_time)->format('H:i');
 
+        // Valida que no esté pidiendo cita antes o después de la jornada
         if ($selectedTime < $start || $selectedTime >= $end) {
             $this->addError('time', "El horario seleccionado ({$this->time}) está fuera de la jornada laboral del barbero ({$start} - {$end}).");
             return false;
         }
 
+        // Valida que no esté pidiendo cita durante la hora de almuerzo
         if ($schedule->lunch_start_time && $schedule->lunch_end_time) {
             $lunchStart = Carbon::parse($schedule->lunch_start_time)->format('H:i');
             $lunchEnd = Carbon::parse($schedule->lunch_end_time)->format('H:i');
@@ -170,6 +206,10 @@ class AppointmentForm extends Component
         return true;
     }
 
+    /**
+     * Calcula dinámicamente los espacios de tiempo ("slots") disponibles para la vista.
+     * Genera botones de horas disponibles excluyendo las horas ocupadas o recesos.
+     */
     public function getAvailableSlots()
     {
         if (!$this->barber_id || !$this->date) {
@@ -186,6 +226,7 @@ class AppointmentForm extends Component
 
         $schedule = $barber->schedules()->where('day_of_week', $dayOfWeek)->first();
 
+        // Si el barbero no trabaja, regresa un status especial
         if (!$schedule || !$schedule->is_working) {
             return [
                 'status' => 'not_working',
@@ -200,6 +241,7 @@ class AppointmentForm extends Component
         $slots = [];
         $current = $start->copy();
 
+        // Obtiene todas las horas ya ocupadas en base de datos para este barbero y fecha
         $bookedTimes = Appointment::where('barber_id', $this->barber_id)
             ->where('date', $this->date)
             ->where('status', '!=', 'canceled');
@@ -212,6 +254,7 @@ class AppointmentForm extends Component
             ->map(fn($t) => Carbon::parse($t)->format('H:i'))
             ->toArray();
 
+        // Recorre la jornada laboral en intervalos de 30 minutos
         while ($current->lt($end)) {
             $timeSlot = $current->format('H:i');
 
@@ -224,6 +267,7 @@ class AppointmentForm extends Component
                 }
             }
 
+            // Si no es hora de almuerzo, añade el espacio a la lista disponible o lo marca como ocupado
             if (!$isLunch) {
                 $isBooked = in_array($timeSlot, $bookedTimes);
                 $slots[] = [
@@ -241,6 +285,9 @@ class AppointmentForm extends Component
         ];
     }
 
+    /**
+     * Helper para traducir números de días a español.
+     */
     private function getDayName($dayNum)
     {
         $days = [
@@ -255,6 +302,9 @@ class AppointmentForm extends Component
         return $days[$dayNum] ?? '';
     }
 
+    /**
+     * Renderiza la vista del componente y le inyecta las listas maestras (Selects).
+     */
     public function render()
     {
         return view($this->isEditing ? 'livewire.admin.appointments.edit' : 'livewire.admin.appointments.create', [

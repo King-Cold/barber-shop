@@ -1,6 +1,6 @@
 <div class="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <x-breadcrumbs :links="[
-        ['label' => 'Citas', 'url' => route('appointments')],
+        ['label' => 'Citas', 'url' => route('admin.appointments.index')],
         ['label' => 'Agendar Nueva Cita']
     ]" />
 
@@ -11,7 +11,7 @@
                 <i class="fa-solid fa-calendar-plus mr-2 text-bronze-gold"></i>
                 Agendar Nueva Cita
             </h2>
-            <a href="{{ route('appointments') }}" class="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors" wire:navigate>
+            <a href="{{ route('admin.appointments.index') }}" class="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors" wire:navigate>
                 <i class="fa-solid fa-arrow-left mr-1"></i> Cancelar
             </a>
         </div>
@@ -130,7 +130,7 @@
             </div>
 
             <div class="mt-12 flex items-center justify-end space-x-4 border-t border-gray-100 pt-8">
-                <a href="{{ route('appointments') }}" class="px-8 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-55 transition-all shadow-sm" wire:navigate>
+                <a href="{{ route('admin.appointments.index') }}" class="px-8 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-55 transition-all shadow-sm" wire:navigate>
                     Cancelar
                 </a>
                 <button type="submit" class="px-10 py-3 text-sm font-bold text-white bg-bronze-gold hover:bg-yellow-600 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center">

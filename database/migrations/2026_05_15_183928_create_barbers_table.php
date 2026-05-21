@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('specialty')->nullable();
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
