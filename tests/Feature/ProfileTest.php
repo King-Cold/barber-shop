@@ -4,7 +4,7 @@ use App\Models\User;
 use Livewire\Volt\Volt;
 
 test('profile page is displayed', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['role_id' => 1]);
 
     $this->actingAs($user);
 

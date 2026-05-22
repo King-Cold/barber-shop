@@ -28,7 +28,6 @@ Route::middleware(['auth', 'role:1,2'])->group(function () {
 
 // Importa las rutas de autenticación (Login, Registro, Recuperación de contraseña, etc.)
 require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
 
 /*
 |--------------------------------------------------------------------------

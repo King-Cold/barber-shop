@@ -17,10 +17,29 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Using Livewire for the datatable/manager
-        return view('admin.clients.index');
+        $search = $request->input('search', '');
+        $perPage = $request->input('per_page', 10);
+        $sortField = $request->input('sort', 'id');
+        $sortDirection = $request->input('direction', 'desc');
+
+        // Whitelist sort fields
+        if (!in_array($sortField, ['id', 'name', 'email', 'phone'])) {
+            $sortField = 'id';
+        }
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $clients = Client::where('name', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->orWhere('phone', 'like', '%' . $search . '%')
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage)
+            ->appends($request->all());
+
+        return view('admin.clients.index', compact('clients', 'search', 'perPage', 'sortField', 'sortDirection'));
     }
 
     /**

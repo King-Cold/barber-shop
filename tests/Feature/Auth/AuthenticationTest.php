@@ -44,7 +44,7 @@ test('users can not authenticate with invalid password', function () {
 });
 
 test('navigation menu can be rendered', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['role_id' => 1]);
 
     $this->actingAs($user);
 
@@ -52,7 +52,8 @@ test('navigation menu can be rendered', function () {
 
     $response
         ->assertOk()
-        ->assertSeeVolt('layout.navigation');
+        ->assertSee('Dashboard')
+        ->assertSee('Citas');
 });
 
 test('users can logout', function () {

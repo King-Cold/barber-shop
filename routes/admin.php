@@ -20,9 +20,7 @@ use App\Http\Controllers\Admin\ClientController;
 // ----------------------------------------
 Route::middleware(['role:2'])->group(function () {
     // Users Management
-    Route::get('users', \App\Livewire\Admin\UserManager::class)->name('users.index');
-    Route::get('users/create', \App\Livewire\Admin\UserForm::class)->name('users.create');
-    Route::get('users/{user}/edit', \App\Livewire\Admin\UserForm::class)->name('users.edit');
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
 });
 
 // ----------------------------------------
@@ -30,25 +28,13 @@ Route::middleware(['role:2'])->group(function () {
 // ----------------------------------------
 Route::middleware(['role:1,2'])->group(function () {
     // Barbers CRUD
-    Route::get('barbers', \App\Livewire\Admin\BarberManager::class)->name('barbers.index');
-    Route::get('barbers/create', [BarberController::class, 'create'])->name('barbers.create');
-    Route::post('barbers', [BarberController::class, 'store'])->name('barbers.store');
-    Route::get('barbers/{barber}/edit', [BarberController::class, 'edit'])->name('barbers.edit');
-    Route::put('barbers/{barber}', [BarberController::class, 'update'])->name('barbers.update');
-    Route::delete('barbers/{barber}', [BarberController::class, 'destroy'])->name('barbers.destroy');
+    Route::resource('barbers', BarberController::class)->except(['show']);
 
     // Clients CRUD
-    Route::get('clients', \App\Livewire\Admin\ClientManager::class)->name('clients.index');
-    Route::get('clients/create', [ClientController::class, 'create'])->name('clients.create');
-    Route::post('clients', [ClientController::class, 'store'])->name('clients.store');
-    Route::get('clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
-    Route::put('clients/{client}', [ClientController::class, 'update'])->name('clients.update');
-    Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
+    Route::resource('clients', ClientController::class)->except(['show']);
 
     // Services CRUD
-    Route::get('services', \App\Livewire\Admin\ServiceManager::class)->name('services.index');
-    Route::get('services/create', \App\Livewire\Admin\ServiceForm::class)->name('services.create');
-    Route::get('services/{service}/edit', \App\Livewire\Admin\ServiceForm::class)->name('services.edit');
+    Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class)->except(['show']);
 });
 
 // ----------------------------------------
@@ -71,9 +57,10 @@ Route::middleware(['role:1,2,4'])->group(function () {
 // ----------------------------------------
 Route::middleware(['role:1,2,3,4'])->group(function () {
     // Appointments CRUD & Ticket printing
-    Route::get('appointments', \App\Livewire\Admin\AppointmentManager::class)->name('appointments.index');
-    Route::get('appointments/create', \App\Livewire\Admin\AppointmentForm::class)->name('appointments.create');
-    Route::get('appointments/{appointment}/edit', \App\Livewire\Admin\AppointmentForm::class)->name('appointments.edit');
+    Route::get('appointments/slots', [\App\Http\Controllers\Admin\AppointmentController::class, 'getSlots'])->name('appointments.slots');
+    Route::patch('appointments/{appointment}/complete', [\App\Http\Controllers\Admin\AppointmentController::class, 'complete'])->name('appointments.complete');
+    Route::resource('appointments', \App\Http\Controllers\Admin\AppointmentController::class)->except(['show']);
     Route::get('appointments/{appointment}/ticket', [\App\Http\Controllers\AppointmentTicketController::class, 'download'])->name('appointments.ticket');
     Route::get('appointments/{appointment}/preview', [\App\Http\Controllers\AppointmentTicketController::class, 'preview'])->name('appointments.preview');
 });
+

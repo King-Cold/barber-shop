@@ -17,10 +17,28 @@ class BarberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Using Livewire for the datatable/manager
-        return view('admin.barbers.index');
+        $search = $request->input('search', '');
+        $perPage = $request->input('per_page', 10);
+        $sortField = $request->input('sort', 'id');
+        $sortDirection = $request->input('direction', 'desc');
+
+        // Whitelist sort fields
+        if (!in_array($sortField, ['id', 'name', 'email', 'phone', 'specialty'])) {
+            $sortField = 'id';
+        }
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $barbers = Barber::where('name', 'like', '%' . $search . '%')
+            ->orWhere('specialty', 'like', '%' . $search . '%')
+            ->orderBy($sortField, $sortDirection)
+            ->paginate($perPage)
+            ->appends($request->all());
+
+        return view('admin.barbers.index', compact('barbers', 'search', 'perPage', 'sortField', 'sortDirection'));
     }
 
     /**
